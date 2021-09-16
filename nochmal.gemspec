@@ -10,13 +10,13 @@ Gem::Specification.new do |spec|
 
   spec.summary       = "Handles ActiveStorage attachment reuploading."
   spec.description   = "Adds a rake task to reupload ActiveStorage attachments to a new storage."
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/puzzle/nochmal"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.4.0")
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
-  spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
+  spec.metadata["changelog_uri"] = "https://github.com/puzzle/nochmal/blob/main/CHANGELOG.md"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
@@ -29,6 +29,18 @@ Gem::Specification.new do |spec|
 
   # Uncomment to register a new dependency of your gem
   # spec.add_dependency "example-gem", "~> 1.0"
+
+  spec.add_development_dependency "bootsnap"
+  spec.add_development_dependency "bundler"
+  spec.add_development_dependency "listen"
+  spec.add_development_dependency "pry"
+  spec.add_development_dependency "rails", "~> 5.2.6"
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec", "~> 3.7"
+  spec.add_development_dependency "rspec-its"
+  spec.add_development_dependency "rspec-rails"
+  spec.add_development_dependency "rspec-rake"
+  spec.add_development_dependency "sqlite3"
 
   # For more information and examples about making a new gem, checkout our
   # guide at: https://bundler.io/guides/creating_gem.html
