@@ -2,7 +2,11 @@
 
 require_relative "nochmal/version"
 
+require_relative "nochmal/railtie" if defined?(Rails)
+
+require_relative "nochmal/active_storage_helper"
+require_relative "nochmal/reupload"
+require_relative "nochmal/output"
+
 module Nochmal
-  class Error < StandardError; end
-  # Your code goes here...
 end

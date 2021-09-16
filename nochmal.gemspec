@@ -8,16 +8,14 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Thomas Burkhalter"]
   spec.email         = ["new.mysteryman@gmail.com"]
 
-  spec.summary       = "TODO: Write a short summary, because RubyGems requires one."
-  spec.description   = "TODO: Write a longer description or delete this line."
+  spec.summary       = "Handles ActiveStorage attachment reuploading."
+  spec.description   = "Adds a rake task to reupload ActiveStorage attachments to a new storage."
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.4.0")
 
-  spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
-
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "TODO: Put your gem's public repo URL here."
+  spec.metadata["source_code_uri"] = spec.homepage
   spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
 
   # Specify which files should be added to the gem when it is released.
