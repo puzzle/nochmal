@@ -1,10 +1,10 @@
-# frozen_string_literals: true
+# frozen_string_literal: true
 
 # Handles output for the Reupload Task
 class Output
   class << self
-    def reupload
-      puts reupload_header
+    def reupload(models)
+      puts reupload_header(models)
       yield
       puts reupload_footer
     end
@@ -28,7 +28,7 @@ class Output
 
     private
 
-    def reupload_header
+    def reupload_header(models)
       model_text = "model".pluralize(models.count)
       model_names = models.map { |model| green(model) }.join(", ")
 

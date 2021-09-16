@@ -1,4 +1,4 @@
-# frozen_string_literals: true
+# frozen_string_literal: true
 
 # Handles Reuploading of all attachments
 # from: (required) = ActiveStorage service name (e.g. local)
@@ -6,14 +6,15 @@
 #                  the currently configured service will be used.
 class Reupload
   attr_reader :active_storage, :from_service, :to_service
-  def initialize(from:, to: nil)
-    @active_storage = ActiveStorageHelper.new
+
+  def initialize(from:, to: nil, helper: nil)
+    @active_storage = helper || ActiveStorageHelper.new
     @from_service = active_storage.storage_service(from.to_sym)
     @to_service = active_storage.storage_service(to&.to_sym)
   end
 
   def all
-    Output.reupload do
+    Output.reupload(models) do
       models.each do |model|
         reupload_model(model)
       end

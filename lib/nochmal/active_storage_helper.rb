@@ -1,4 +1,4 @@
-# frozen_string_literals: true
+# frozen_string_literal: true
 
 # Handles active storage specifics for the Reupload Task
 class ActiveStorageHelper
@@ -15,6 +15,7 @@ class ActiveStorageHelper
 
       ActiveRecord::Base
         .descendants
+        .reject(&:abstract_class?)
         .select { |model| attachment?(model) }
         .reject { |model| blob_model?(model) }
     end
