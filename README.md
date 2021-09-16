@@ -1,8 +1,6 @@
 # Nochmal
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/nochmal`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This gem adds a rake task to your application that finds all your models that have attachments and reuploads the attachments to the newly configured (or specified) storage service.
 
 ## Installation
 
@@ -22,8 +20,28 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+1. Update your `config/storage.yml` with the new service:
+   ```yaml
+    local:
+      service: Disk
+      root: <%= Rails.root.join("storage") %>
 
+    remote:
+      service: Disk
+      root: <%= Rails.root.join("tmp/remote_storage") %>
+   ```
+1. Update your configured storage `config/environments/production.rb`:
+   ```ruby
+     config.active_storage.service = :remote
+   ```
+1. Run the rake task:
+   ```bash
+     rake nochmal:reupload FROM=local TO=remote
+   ```
+
+## Project Scope
+- [x] Works for `has_one_attached` attachments
+- [ ] Does not yet work for `has_many_attached` attachments
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
