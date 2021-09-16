@@ -2,7 +2,7 @@
 
 # Handles active storage specifics for the Reupload Task
 class ActiveStorageHelper
-  def storage_service(service)
+  def storage_service(service = nil)
     service ||= Rails.configuration.active_storage.service
 
     @storage_service ||= {}
