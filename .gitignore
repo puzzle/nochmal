@@ -7,7 +7,20 @@
 /spec/reports/
 /tmp/
 /vendor
-/spec/dummy
 
 # rspec failure tracking
 .rspec_status
+
+*.gem
+coverage/*
+Gemfile.lock
+*~
+.bundle
+.rvmrc
+log/*
+measurement/*
+pkg/*
+.DS_Store
+.env
+spec/dummy/tmp/*
+spec/dummy/log/*.log
