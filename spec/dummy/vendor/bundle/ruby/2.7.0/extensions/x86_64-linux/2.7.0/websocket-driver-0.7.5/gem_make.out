@@ -1,0 +1,15 @@
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/websocket-driver-0.7.5/ext/websocket-driver
+/root/.asdf/installs/ruby/2.7.1/bin/ruby -I /root/.asdf/installs/ruby/2.7.1/lib/ruby/site_ruby/2.7.0 -r ./siteconf20210917-1109-all4p3.rb extconf.rb
+creating Makefile
+
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/websocket-driver-0.7.5/ext/websocket-driver
+make DESTDIR\= clean
+
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/websocket-driver-0.7.5/ext/websocket-driver
+make DESTDIR\=
+compiling websocket_mask.c
+linking shared-object websocket_mask.so
+
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/websocket-driver-0.7.5/ext/websocket-driver
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 websocket_mask.so ./.gem.20210917-1109-1gr9vei

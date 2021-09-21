@@ -1,0 +1,15 @@
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/bindex-0.8.1/ext/skiptrace
+/root/.asdf/installs/ruby/2.7.1/bin/ruby -I /root/.asdf/installs/ruby/2.7.1/lib/ruby/site_ruby/2.7.0 -r ./siteconf20210917-1109-yr3v6p.rb extconf.rb
+creating Makefile
+
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/bindex-0.8.1/ext/skiptrace
+make DESTDIR\= clean
+
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/bindex-0.8.1/ext/skiptrace
+make DESTDIR\=
+compiling cruby.c
+linking shared-object skiptrace/internal/cruby.so
+
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/bindex-0.8.1/ext/skiptrace
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 cruby.so ./.gem.20210917-1109-1pvuykz/skiptrace/internal

@@ -1,0 +1,19 @@
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/byebug-11.1.3/ext/byebug
+/root/.asdf/installs/ruby/2.7.1/bin/ruby -I /root/.asdf/installs/ruby/2.7.1/lib/ruby/site_ruby/2.7.0 -r ./siteconf20210917-2039-11okwzd.rb extconf.rb
+creating Makefile
+
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/byebug-11.1.3/ext/byebug
+make DESTDIR\= clean
+
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/byebug-11.1.3/ext/byebug
+make DESTDIR\=
+compiling breakpoint.c
+compiling byebug.c
+compiling context.c
+compiling locker.c
+compiling threads.c
+linking shared-object byebug/byebug.so
+
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/byebug-11.1.3/ext/byebug
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 byebug.so ./.gem.20210917-2039-wjz2lt/byebug

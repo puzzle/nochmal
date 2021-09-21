@@ -1,0 +1,102 @@
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/nio4r-2.5.8/ext/nio4r
+/root/.asdf/installs/ruby/2.7.1/bin/ruby -I /root/.asdf/installs/ruby/2.7.1/lib/ruby/site_ruby/2.7.0 -r ./siteconf20210917-2039-1rsxle7.rb extconf.rb
+checking for unistd.h... yes
+checking for linux/aio_abi.h... yes
+checking for linux/io_uring.h... no
+checking for sys/select.h... yes
+checking for port_event_t in poll.h... no
+checking for sys/epoll.h... yes
+checking for sys/event.h... no
+checking for port_event_t in port.h... no
+checking for sys/resource.h... yes
+creating Makefile
+
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/nio4r-2.5.8/ext/nio4r
+make DESTDIR\= clean
+
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/nio4r-2.5.8/ext/nio4r
+make DESTDIR\=
+compiling bytebuffer.c
+compiling monitor.c
+compiling nio4r_ext.c
+In file included from nio4r_ext.c:6:0:
+../libev/ev.c:573:48: warning: "/*" within comment [-Wcomment]
+ /*#define MIN_INTERVAL  0.00000095367431640625 /* 1/2**20, good till 2200 */
+                                                 
+In file included from nio4r_ext.c:6:0:
+../libev/ev.c: In function ‘ecb_binary32_to_binary16’:
+../libev/ev.c:1510:13: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+       if (e < (14 - 24)) /* might not be sharp, but is good enough */
+             ^
+In file included from nio4r_ext.c:6:0:
+../libev/ev.c: At top level:
+../libev/ev.c:2136:31: warning: ‘ev_default_loop_ptr’ initialized and declared ‘extern’
+   EV_API_DECL struct ev_loop *ev_default_loop_ptr = 0; /* needs to be initialised to make it a definition despite extern */
+                               ^~~~~~~~~~~~~~~~~~~
+../libev/ev.c: In function ‘array_nextsize’:
+../libev/ev.c:2249:19: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (elem * ncur > MALLOC_ROUND - sizeof (void *) * 4)
+                   ^
+In file included from ../libev/ev.c:3086:0,
+                 from nio4r_ext.c:6:
+../libev/ev_linuxaio.c: In function ‘linuxaio_poll’:
+../libev/ev_linuxaio.c:467:10: warning: suggest explicit braces to avoid ambiguous ‘else’ [-Wdangling-else]
+       if (ecb_expect_false (res < 0))
+          ^
+In file included from nio4r_ext.c:6:0:
+../libev/ev.c: In function ‘ev_io_start’:
+../libev/ev.c:4417:34: warning: suggest parentheses around arithmetic in operand of ‘|’ [-Wparentheses]
+   fd_change (EV_A_ fd, w->events & EV__IOFDSET | EV_ANFD_REIFY);
+                        ~~~~~~~~~~^~~~~~~~~~~~~
+../libev/ev.c: At top level:
+../libev/ev.c:5682:27: warning: "/*" within comment [-Wcomment]
+ /* EV_STAT     0x00001000 /* stat data changed */
+                            
+../libev/ev.c:5683:27: warning: "/*" within comment [-Wcomment]
+ /* EV_EMBED    0x00010000 /* embedded event loop needs sweep */
+                            
+In file included from nio4r_ext.c:6:0:
+../libev/ev.c: In function ‘evpipe_write’:
+../libev/ev.c:2798:11: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+           write (evpipe [1], &counter, sizeof (uint64_t));
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../libev/ev.c:2810:11: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+           write (evpipe [1], &(evpipe [1]), 1);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../libev/ev.c: In function ‘pipecb’:
+../libev/ev.c:2831:11: warning: ignoring return value of ‘read’, declared with attribute warn_unused_result [-Wunused-result]
+           read (evpipe [1], &counter, sizeof (uint64_t));
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../libev/ev.c:2845:11: warning: ignoring return value of ‘read’, declared with attribute warn_unused_result [-Wunused-result]
+           read (evpipe [0], &dummy, sizeof (dummy));
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+nio4r_ext.c: At top level:
+cc1: warning: unrecognized command line option ‘-Wno-self-assign’
+cc1: warning: unrecognized command line option ‘-Wno-parentheses-equality’
+cc1: warning: unrecognized command line option ‘-Wno-constant-logical-operand’
+cc1: warning: unrecognized command line option ‘-Wno-cast-function-type’
+compiling selector.c
+selector.c: In function ‘NIO_Selector_synchronize’:
+selector.c:301:26: warning: passing argument 1 of ‘rb_ensure’ from incompatible pointer type [-Wincompatible-pointer-types]
+         return rb_ensure(func, (VALUE)args, NIO_Selector_unlock, self);
+                          ^~~~
+In file included from /root/.asdf/installs/ruby/2.7.1/include/ruby-2.7.0/ruby.h:33:0,
+                 from nio4r.h:10,
+                 from selector.c:6:
+/root/.asdf/installs/ruby/2.7.1/include/ruby-2.7.0/ruby/ruby.h:1990:7: note: expected ‘VALUE (*)(VALUE) {aka long unsigned int (*)(long unsigned int)}’ but argument is of type ‘VALUE (*)(VALUE *) {aka long unsigned int (*)(long unsigned int *)}’
+ VALUE rb_ensure(VALUE(*)(VALUE),VALUE,VALUE(*)(VALUE),VALUE);
+       ^~~~~~~~~
+selector.c: In function ‘NIO_Selector_wakeup’:
+selector.c:499:5: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+     write(selector->wakeup_writer, "\0", 1);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+selector.c: At top level:
+cc1: warning: unrecognized command line option ‘-Wno-self-assign’
+cc1: warning: unrecognized command line option ‘-Wno-parentheses-equality’
+cc1: warning: unrecognized command line option ‘-Wno-constant-logical-operand’
+cc1: warning: unrecognized command line option ‘-Wno-cast-function-type’
+linking shared-object nio4r_ext.so
+
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/nio4r-2.5.8/ext/nio4r
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 nio4r_ext.so ./.gem.20210917-2039-8tf6lt

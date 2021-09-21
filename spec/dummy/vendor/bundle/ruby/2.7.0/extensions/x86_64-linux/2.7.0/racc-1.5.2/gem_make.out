@@ -1,0 +1,16 @@
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/racc-1.5.2/ext/racc/cparse
+/root/.asdf/installs/ruby/2.7.1/bin/ruby -I /root/.asdf/installs/ruby/2.7.1/lib/ruby/site_ruby/2.7.0 -r ./siteconf20210917-2039-1hx0u4y.rb extconf.rb
+checking for rb_ary_subseq()... yes
+creating Makefile
+
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/racc-1.5.2/ext/racc/cparse
+make DESTDIR\= clean
+
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/racc-1.5.2/ext/racc/cparse
+make DESTDIR\=
+compiling cparse.c
+linking shared-object racc/cparse.so
+
+current directory: /code/pz/nochmal/spec/dummy/vendor/bundle/ruby/2.7.0/gems/racc-1.5.2/ext/racc/cparse
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 cparse.so ./.gem.20210917-2039-13kuv01/racc
