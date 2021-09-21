@@ -24,3 +24,4 @@ pkg/*
 .env
 spec/dummy/tmp/*
 spec/dummy/log/*.log
+.vscode/
