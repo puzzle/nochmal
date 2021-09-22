@@ -12,7 +12,7 @@ RSpec.describe Nochmal::Railtie do
   end
 
   describe "The Task" do
-    let(:reupload) { instance_double(Reupload) }
+    let(:reupload) { instance_double(Nochmal::Reupload) }
     let(:from) { "local" }
     let(:to) { "remote" }
 
@@ -20,12 +20,12 @@ RSpec.describe Nochmal::Railtie do
       ENV["REUPLOAD_FROM"] = from
       ENV["REUPLOAD_TO"] = to
 
-      allow(Reupload).to receive(:new).and_return(reupload)
+      allow(Nochmal::Reupload).to receive(:new).and_return(reupload)
       allow(reupload).to receive(:all)
     end
 
     it "calls #all on reupload" do
-      allow(Reupload).to receive(:new).and_return(reupload)
+      allow(Nochmal::Reupload).to receive(:new).and_return(reupload)
       allow(reupload).to receive(:all)
 
       task.execute
@@ -45,14 +45,14 @@ RSpec.describe Nochmal::Railtie do
 
       it "calls Reupload.new with from" do
         task.execute
-        expect(Reupload).to have_received(:new).with(from: from, to: to)
+        expect(Nochmal::Reupload).to have_received(:new).with(from: from, to: to)
       end
     end
 
     describe "with from and to ENV variable given" do
       it "calls Reupload.new with from and to" do
         task.execute
-        expect(Reupload).to have_received(:new).with(from: from, to: to)
+        expect(Nochmal::Reupload).to have_received(:new).with(from: from, to: to)
       end
     end
   end

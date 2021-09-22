@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Output do
+RSpec.describe Nochmal::Output do
   subject { described_class }
 
   describe "#reupload" do

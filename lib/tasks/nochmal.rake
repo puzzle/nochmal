@@ -8,6 +8,6 @@ namespace :nochmal do
     from = ENV["REUPLOAD_FROM"] || raise("The ENV variable REUPLOAD_FROM is required")
     to = ENV["REUPLOAD_TO"]
 
-    Reupload.new(from: from, to: to).all
+    Nochmal::Reupload.new(from: from, to: to).all
   end
 end

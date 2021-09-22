@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe ActiveStorageHelper do
+RSpec.describe Nochmal::ActiveStorageHelper do
   let(:user) { instance_double("User") }
   let(:blob) { instance_double("Blob") }
   let(:avatar) { instance_double("Avatar") }

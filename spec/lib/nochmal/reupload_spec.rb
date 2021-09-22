@@ -3,10 +3,10 @@
 require "spec_helper"
 
 # rubocop:disable RSpec/MultipleMemoizedHelpers
-RSpec.describe Reupload do
+RSpec.describe Nochmal::Reupload do
   subject(:instance) { described_class.new(from: :local, to: :remote, helper: helper) }
 
-  let(:helper) { instance_double(ActiveStorageHelper) }
+  let(:helper) { instance_double(Nochmal::ActiveStorageHelper) }
   let(:model)  { instance_double("User") }
   let(:models) { instance_double("Users") }
   let(:type)   { instance_double("Avatar") }
@@ -68,10 +68,10 @@ RSpec.describe Reupload do
 
   def stub_output
     # Silence Output in tests
-    allow(Output).to receive(:reupload).and_yield
-    allow(Output).to receive(:model).and_yield
-    allow(Output).to receive(:type).and_yield
-    allow(Output).to receive(:print_progress_indicator)
+    allow(Nochmal::Output).to receive(:reupload).and_yield
+    allow(Nochmal::Output).to receive(:model).and_yield
+    allow(Nochmal::Output).to receive(:type).and_yield
+    allow(Nochmal::Output).to receive(:print_progress_indicator)
   end
 end
 # rubocop:enable RSpec/MultipleMemoizedHelpers
