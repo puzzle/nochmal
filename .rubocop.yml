@@ -1,5 +1,12 @@
+---
+require: rubocop-rspec
+
 AllCops:
+  NewCops: enable
   TargetRubyVersion: 2.4
+  Exclude:
+    - spec/dummy/**/*
+    - vendor/**/*
 
 Style/StringLiterals:
   Enabled: true
@@ -16,6 +23,8 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Exclude:
     - spec/**/*.rb
+    - nochmal.gemspec
 
 Layout/LineLength:
   Max: 120
+...

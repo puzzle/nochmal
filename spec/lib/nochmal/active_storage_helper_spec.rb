@@ -3,13 +3,10 @@
 require "spec_helper"
 
 RSpec.describe ActiveStorageHelper do
-  let(:user) { double("User") }
-  let(:blob) { double("Blob") }
-  let(:descendants) { [user, blob] }
-
-  let(:avatar) { double("Avatar") }
-  let(:avatar_association) { double("AvatarAssociation") }
-  let(:associations) { [avatar_association] }
+  let(:user) { instance_double("User") }
+  let(:blob) { instance_double("Blob") }
+  let(:avatar) { instance_double("Avatar") }
+  let(:avatar_association) { instance_double("AvatarAssociation") }
 
   let(:location) { Pathname.new(__dir__).dirname.dirname.dirname.expand_path }
 
@@ -21,12 +18,13 @@ RSpec.describe ActiveStorageHelper do
 
     context "with the :remote service" do
       subject { described_class.new.storage_service(:remote) }
+
       its(:root) { is_expected.to eq "#{location}/spec/dummy/tmp/remote_storage" }
     end
   end
 
   describe "#models_with_attachments" do
-    subject { described_class.new.models_with_attachments }
+    subject(:models) { described_class.new.models_with_attachments }
 
     context "when user has attachments" do
       before { prepare_models }
@@ -35,15 +33,18 @@ RSpec.describe ActiveStorageHelper do
       it { is_expected.to include user }
     end
 
-    it "should be memoized" do
-      expect(ActiveRecord::Base).to receive(:descendants).once.and_return([])
-      subject
-      subject
+    it "is memoized" do
+      allow(ActiveRecord::Base).to receive(:descendants).once.and_return([])
+
+      models
+      models
+
+      expect(ActiveRecord::Base).to have_received(:descendants)
     end
   end
 
   describe "#attachment_types_for" do
-    subject { described_class.new.attachment_types_for(user) }
+    subject(:types) { described_class.new.attachment_types_for(user) }
 
     context "when user has attachments" do
       before do
@@ -55,14 +56,19 @@ RSpec.describe ActiveStorageHelper do
       it { is_expected.to include("avatar") }
     end
 
-    it "should be memoized" do
-      expect(user).to receive(:methods).once.and_return([])
-      subject
-      subject
+    it "is memoized" do
+      allow(user).to receive(:methods).once.and_return([])
+
+      types
+      types
+
+      expect(user).to have_received(:methods)
     end
   end
 
   def prepare_models
+    descendants = [user, blob]
+    associations = [avatar_association]
     allow(ActiveRecord::Base).to receive(:descendants).and_return(descendants)
     allow(user).to receive(:abstract_class?).and_return(false)
     allow(user).to receive(:reflect_on_all_associations).and_return(associations)

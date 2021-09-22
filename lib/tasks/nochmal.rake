@@ -1,6 +1,6 @@
-# frozen_string_literals: true
+# frozen_string_literal: true
 
-# require_relative "../nochmal/reupload.rb"
+require_relative "../nochmal/reupload"
 
 namespace :nochmal do
   desc "Reuploads attachments from ENV['REUPLOAD_FROM'] to ENV['REUPLOAD_TO'] or configured active_storage service"

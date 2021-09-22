@@ -8,5 +8,6 @@ require_relative "nochmal/active_storage_helper"
 require_relative "nochmal/reupload"
 require_relative "nochmal/output"
 
+# This module is the base of the nochmal gem
 module Nochmal
 end

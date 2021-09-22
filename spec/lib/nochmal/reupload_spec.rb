@@ -2,14 +2,17 @@
 
 require "spec_helper"
 
+# rubocop:disable RSpec/MultipleMemoizedHelpers
 RSpec.describe Reupload do
-  let(:helper) { double(ActiveStorageHelper) }
-  let(:model)  { double("User") }
-  let(:models) { double("Users") }
-  let(:type)   { double("Avatar") }
-  let(:blob)   { double("Blob") }
-  let(:local)  { double("LocalService") }
-  let(:remote) { double("RemoteService") }
+  subject(:instance) { described_class.new(from: :local, to: :remote, helper: helper) }
+
+  let(:helper) { instance_double(ActiveStorageHelper) }
+  let(:model)  { instance_double("User") }
+  let(:models) { instance_double("Users") }
+  let(:type)   { instance_double("Avatar") }
+  let(:blob)   { instance_double("Blob") }
+  let(:local)  { instance_double("LocalService") }
+  let(:remote) { instance_double("RemoteService") }
 
   before do
     stub_helper
@@ -17,31 +20,40 @@ RSpec.describe Reupload do
     stub_output
   end
 
-  subject(:instance) { described_class.new(from: :local, to: :remote, helper: helper) }
-
   describe "#all" do
-    subject { instance.all }
+    subject(:all) { instance.all }
 
-    it "should call the from service to download the file" do
-      expect(local).to receive(:download).with("test").and_return("content")
-      expect(remote).to receive(:upload)
-      subject
+    before do
+      allow(local).to receive(:download).and_return("content")
+      allow(remote).to receive(:upload)
+    end
+
+    it "calls the from service to download the file" do
+      all
+
+      expect(local).to have_received(:download).with("test")
+    end
+
+    it "calls the to service to upload the file" do
+      all
+
+      expect(remote).to have_received(:upload)
     end
 
     context "without passed helper" do
       let(:helper) { nil }
 
-      it { expect { subject }.not_to raise_error }
+      it { expect { all }.not_to raise_error }
     end
   end
 
   def stub_helper
-    if helper
-      allow(helper).to receive(:models_with_attachments).and_return([model])
-      allow(helper).to receive(:attachment_types_for).with(model).and_return(["avatar"])
-      allow(helper).to receive(:storage_service).with(:local).and_return(local)
-      allow(helper).to receive(:storage_service).with(:remote).and_return(remote)
-    end
+    return unless helper
+
+    allow(helper).to receive(:models_with_attachments).and_return([model])
+    allow(helper).to receive(:attachment_types_for).with(model).and_return(["avatar"])
+    allow(helper).to receive(:storage_service).with(:local).and_return(local)
+    allow(helper).to receive(:storage_service).with(:remote).and_return(remote)
   end
 
   def stub_models
@@ -62,3 +74,4 @@ RSpec.describe Reupload do
     allow(Output).to receive(:print_progress_indicator)
   end
 end
+# rubocop:enable RSpec/MultipleMemoizedHelpers

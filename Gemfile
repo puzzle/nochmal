@@ -8,6 +8,8 @@ gemspec
 gem "rake", "~> 13.0"
 gem "rspec", "~> 3.0"
 gem "rubocop", "~> 1.7"
+gem "rubocop-discourse", "~> 2.4"
+gem "rubocop-rspec", "~> 2.5.0", require: false
 
 group :test do
   gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
