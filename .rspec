@@ -2,3 +2,4 @@
 --color
 --require spec_helper
 --order rand
+--exclude-pattern spec/dummy/**/*.rb
