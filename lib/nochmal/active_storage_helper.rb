@@ -16,8 +16,8 @@ class ActiveStorageHelper
       ActiveRecord::Base
         .descendants
         .reject(&:abstract_class?)
+        .reject { |model| storage_models?(model) }
         .select { |model| attachment?(model) }
-        .reject { |model| blob_model?(model) }
     end
   end
 
@@ -41,8 +41,12 @@ class ActiveStorageHelper
     end
   end
 
-  def blob_model?(model)
-    model.is_a? ActiveStorage::Blob
+  def storage_models?(model)
+    attachment_models = [ActiveStorage::Blob, ActiveStorage::Attachment]
+
+    attachment_models.any? do |am|
+      model == am || model.is_a?(am)
+    end
   end
 
   def attachment?(model)
