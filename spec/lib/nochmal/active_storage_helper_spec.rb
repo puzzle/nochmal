@@ -11,15 +11,17 @@ RSpec.describe ActiveStorageHelper do
   let(:avatar_association) { double("AvatarAssociation") }
   let(:associations) { [avatar_association] }
 
+  let(:location) { Pathname.new(__dir__).dirname.dirname.dirname.expand_path }
+
   describe "#storage_service" do
     subject { described_class.new.storage_service }
 
     it { is_expected.to be_a ActiveStorage::Service::DiskService }
-    its(:root) { is_expected.to eq "/code/pz/nochmal/spec/dummy/tmp/storage" }
+    its(:root) { is_expected.to eq "#{location}/spec/dummy/tmp/storage" }
 
     context "with the :remote service" do
       subject { described_class.new.storage_service(:remote) }
-      its(:root) { is_expected.to eq "/code/pz/nochmal/spec/dummy/tmp/remote_storage" }
+      its(:root) { is_expected.to eq "#{location}/spec/dummy/tmp/remote_storage" }
     end
   end
 
