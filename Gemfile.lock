@@ -177,6 +177,8 @@ GEM
     rubocop-discourse (2.4.2)
       rubocop (>= 1.1.0)
       rubocop-rspec (>= 2.0.0)
+    rubocop-performance (1.6.1)
+      rubocop (>= 0.71.0)
     rubocop-rspec (2.5.0)
       rubocop (~> 1.19)
     ruby-progressbar (1.11.0)
@@ -220,7 +222,8 @@ DEPENDENCIES
   rspec-rake
   rubocop (~> 1.7)
   rubocop-discourse (~> 2.4)
-  rubocop-rspec (~> 2.5.0)
+  rubocop-performance
+  rubocop-rspec
   simplecov
   sqlite3
   tzinfo-data
