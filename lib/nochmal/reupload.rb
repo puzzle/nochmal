@@ -57,7 +57,7 @@ module Nochmal
         content = @from_service.download(blob.key)
         temp.write(content)
 
-        @to_service.upload(blob.key, Pathname.new(temp).open)
+        @to_service.upload(blob.key, temp)
       end
 
       Output.print_progress_indicator
