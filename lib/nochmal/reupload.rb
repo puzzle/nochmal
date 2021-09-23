@@ -53,10 +53,7 @@ module Nochmal
     def reupload(attachment)
       blob = attachment.blob
 
-      Tempfile.create(binmode: true) do |temp|
-        content = @from_service.download(blob.key)
-        temp.write(content)
-
+      StringIO.open(@from_service.download(blob.key)) do |temp|
         @to_service.upload(blob.key, temp)
       end
 

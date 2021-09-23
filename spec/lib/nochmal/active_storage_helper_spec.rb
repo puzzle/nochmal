@@ -33,6 +33,15 @@ RSpec.describe Nochmal::ActiveStorageHelper do
       it { is_expected.to include user }
     end
 
+    context "when association is polymorphic" do
+      before do
+        prepare_models
+        allow(avatar_association).to receive(:options).and_return({polymorphic: true})
+      end
+
+      it { is_expected.not_to include user }
+    end
+
     it "is memoized" do
       allow(ActiveRecord::Base).to receive(:descendants).once.and_return([])
 
@@ -76,6 +85,7 @@ RSpec.describe Nochmal::ActiveStorageHelper do
     allow(blob).to receive(:reflect_on_all_associations).and_return(associations)
     allow(blob).to receive(:is_a?).and_return(ActiveStorage::Blob)
     allow(avatar_association).to receive(:klass).and_return(ActiveStorage::Attachment)
+    allow(avatar_association).to receive(:options).and_return({})
   end
 
   def prepare_types
