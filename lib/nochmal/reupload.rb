@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+#frozen_string_literal: true
 
 module Nochmal
   # Handles Reuploading of all attachments
@@ -57,7 +57,7 @@ module Nochmal
         content = @from_service.download(blob.key)
         temp.write(content)
 
-        @to_service.upload(blob.key, Pathname.new(temp))
+        @to_service.upload(blob.key, Pathname.new(temp).open)
       end
 
       Output.print_progress_indicator

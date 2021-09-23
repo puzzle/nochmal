@@ -17,7 +17,8 @@ module Nochmal
         ActiveRecord::Base
           .descendants
           .reject(&:abstract_class?)
-          .reject { |model| storage_models?(model) }
+          .reject { |model| polymorphic?(model) }
+          .reject { |model| storage_model?(model) }
           .select { |model| attachment?(model) }
       end
     end
@@ -42,7 +43,13 @@ module Nochmal
       end
     end
 
-    def storage_models?(model)
+    def polymorphic?(model)
+      model.reflect_on_all_associations.map(&:options).any? do |options|
+        options[:polymorphic]
+      end
+    end
+
+    def storage_model?(model)
       attachment_models = [ActiveStorage::Blob, ActiveStorage::Attachment]
 
       attachment_models.any? do |am|
