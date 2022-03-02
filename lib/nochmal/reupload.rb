@@ -1,4 +1,4 @@
-#frozen_string_literal: true
+# frozen_string_literal: true
 
 module Nochmal
   # Handles Reuploading of all attachments
@@ -15,14 +15,20 @@ module Nochmal
     end
 
     def all
-      Output.reupload(models) do
-        models.each do |model|
-          reupload_model(model)
-        end
+      each_model do |model|
+        reupload_model(model)
       end
     end
 
     private
+
+    def each_model(&block)
+      raise ArgumentError, "Please pass a block to handle each model" unless block_given?
+
+      Output.reupload(models) do
+        models.each(&block)
+      end
+    end
 
     def models
       active_storage.models_with_attachments
