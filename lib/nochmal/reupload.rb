@@ -15,18 +15,22 @@ module Nochmal
     end
 
     def all
-      each_model do |model|
-        reupload_model(model)
-      end
+      handle_each_model(:reupload)
+    end
+
+    def list
+      handle_each_model(:list)
     end
 
     private
 
-    def each_model(&block)
-      raise ArgumentError, "Please pass a block to handle each model" unless block_given?
+    def handle_each_model(action)
+      @mode = action
 
       Output.reupload(models) do
-        models.each(&block)
+        models.each do |model|
+          reupload_model(model)
+        end
       end
     end
 
@@ -49,21 +53,26 @@ module Nochmal
     def reupload_type(model, type)
       collection = model.send("with_attached_#{type}")
 
-      Output.type(type, collection.count) do
+      Output.type(type, collection.count, @mode) do
         collection.find_each do |item|
-          reupload(item.send(type))
+          perform(item.send(type))
         end
       end
     end
 
-    def reupload(attachment)
+    def perform(attachment)
       blob = attachment.blob
 
-      StringIO.open(@from_service.download(blob.key)) do |temp|
-        @to_service.upload(blob.key, temp)
-      end
+      case @mode
+      when :reupload
+        StringIO.open(@from_service.download(blob.key)) do |temp|
+          @to_service.upload(blob.key, temp)
+        end
 
-      Output.print_progress_indicator
+        Output.print_progress_indicator
+      when :list
+        Output.attachment(blob)
+      end
     end
   end
 end
