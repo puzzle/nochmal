@@ -14,4 +14,13 @@ namespace :nochmal do
 
     Nochmal::Reupload.new(from: from, to: to).all
   end
+
+  desc "List attachments that would be reuploaded from ENV['REUPLOAD_FROM']"
+  task :list, [:from] => :environment do |_t, args|
+    from = args[:from] ||
+           ENV["REUPLOAD_FROM"] ||
+           raise("The ENV variable REUPLOAD_FROM is required")
+
+    Nochmal::Reupload.new(from: from).list
+  end
 end
