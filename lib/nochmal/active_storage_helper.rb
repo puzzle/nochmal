@@ -9,6 +9,8 @@ module Nochmal
       @storage_service ||= {}
       @storage_service[service] ||= ActiveStorage::Service.configure(service, configurations)
     end
+    alias to_storage_service storage_service
+    alias from_storage_service storage_service
 
     def models_with_attachments
       @models_with_attachments ||= begin
