@@ -52,6 +52,7 @@ module Nochmal
 
     def reupload_type(model, type)
       collection = model.send("with_attached_#{type}")
+      return false unless collection.table_exists?
 
       Output.type(type, collection.count, @mode) do
         collection.find_each do |item|
