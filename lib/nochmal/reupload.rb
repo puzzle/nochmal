@@ -27,6 +27,10 @@ module Nochmal
       handle_each_model(:migrate)
     end
 
+    def count
+      handle_each_model(:count)
+    end
+
     private
 
     def handle_each_model(action)
@@ -84,6 +88,7 @@ module Nochmal
       when :reupload then do_reupload(attachment)
       when :migrate  then do_migrate(attachment, type)
       when :list     then do_list(attachment)
+      when :count    then Output.print_progress_indicator
       end
     end
 
