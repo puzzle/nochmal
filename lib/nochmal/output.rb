@@ -16,16 +16,15 @@ module Nochmal
         puts model_footer
       end
 
-      def type(type, count, mode)
+      def type(type, count, action)
         puts type_header(type)
-        action = "#{ActiveSupport::Inflector.titleize(mode)}ing" # Listing, Processing, Reuploading
         print attachment_summary(count, action)
         yield
         puts type_footer
       end
 
-      def attachment(blob)
-        puts attachment_detail(blob)
+      def attachment(filename)
+        print attachment_detail(filename)
       end
 
       def print_progress_indicator
@@ -56,11 +55,11 @@ module Nochmal
       end
 
       def attachment_summary(count, action)
-        "    #{action} #{count} #{"attachment".pluralize(count)}: "
+        "    Going to #{action} #{count} #{"attachment".pluralize(count)}: "
       end
 
-      def attachment_detail(blob)
-        "      - #{blob.key}"
+      def attachment_detail(filename)
+        "\n      - #{filename}"
       end
 
       def type_footer
