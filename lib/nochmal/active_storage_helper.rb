@@ -85,6 +85,7 @@ module Nochmal
     def attachment?(model)
       model.reflect_on_all_associations.any? do |assoc|
         next if assoc.options[:polymorphic] # the class cannot be checked for polymorphic associactions
+        next unless assoc.has_one? # filters out has_many_attached
 
         assoc.klass == ActiveStorage::Attachment
       end
