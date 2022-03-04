@@ -33,7 +33,13 @@ module Nochmal
     end
 
     def collection(model, type)
-      model.send(:"with_attached_#{type}").joins(:"#{type}_attachment")
+      maybe_sti_scope = if !model.descends_from_active_record? || model.descendants.any?
+                          model.where(type: model.sti_name)
+                        else
+                          model
+                        end
+
+      maybe_sti_scope.send(:"with_attached_#{type}").joins(:"#{type}_attachment")
     end
 
     def blob(attachment)
