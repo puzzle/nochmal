@@ -10,7 +10,12 @@ module Nochmal
         puts reupload_footer
       end
 
-      def model(model)
+      def model(model, skipping: false)
+        if skipping
+          puts "Skipping #{green(model)}"
+          return true
+        end
+
         puts model_header(model)
         yield
         puts model_footer

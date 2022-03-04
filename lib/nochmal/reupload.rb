@@ -34,6 +34,9 @@ module Nochmal
 
       Output.reupload(models) do
         models.each do |model|
+          # Output.model(model, skipping: true) &&
+          next if skip_model?(model)
+
           reupload_model(model)
         end
       end
@@ -56,9 +59,16 @@ module Nochmal
       end
     end
 
+    def skip_model?(model)
+      !model.table_exists? || # no table
+        model.count.zero? || # no records
+        types(model).all? do |type| # no uploads of any kind (type)
+          active_storage.collection(model, type).count.zero?
+        end
+    end
+
     def reupload_type(model, type)
       collection = active_storage.collection(model, type)
-      return false unless collection.table_exists?
 
       @notes << "- #{model}.has_one_attached #{active_storage.migration_method(type)}" if @mode == :migrate
 
