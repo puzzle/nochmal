@@ -3,14 +3,13 @@
 module Nochmal
   # Handles active storage specifics for the Reupload Task
   class ActiveStorageHelper
-    def storage_service(service = nil)
-      service ||= Rails.configuration.active_storage.service
-
-      @storage_service ||= {}
-      @storage_service[service] ||= ActiveStorage::Service.configure(service, configurations)
+    def to_storage_service(service = nil)
+      storage_service(service)
     end
-    alias to_storage_service storage_service
-    alias from_storage_service storage_service
+
+    def from_storage_service(service = nil)
+      storage_service(service)
+    end
 
     def models_with_attachments
       @models_with_attachments ||= begin
@@ -35,6 +34,13 @@ module Nochmal
     end
 
     private
+
+    def storage_service(service = nil)
+      service ||= Rails.configuration.active_storage.service
+
+      @storage_service ||= {}
+      @storage_service[service] ||= ActiveStorage::Service.configure(service, configurations)
+    end
 
     def configurations
       @configurations ||= begin
