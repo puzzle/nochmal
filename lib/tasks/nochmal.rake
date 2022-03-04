@@ -23,4 +23,12 @@ namespace :nochmal do
 
     Nochmal::Reupload.new(from: from).list
   end
+
+  desc "Migrate uploads from carrierwave to active_storage"
+  task :carrierwave, %i[to] => :environment do |_t, args|
+    from = "unused-but-call-me-ishmael" # is carrierwave-migration my white whale?
+    to = args[:to] || ENV["REUPLOAD_TO"]
+
+    Nochmal::Reupload.new(from: from, to: to, helper: Nochmal::CarrierwaveMigrationHelper.new).migrate
+  end
 end
