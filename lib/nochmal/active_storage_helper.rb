@@ -33,6 +33,14 @@ module Nochmal
         .compact
     end
 
+    def collection(model, type)
+      model.send(:"with_attached_#{type}")
+    end
+
+    def blob(attachment)
+      attachment.blob
+    end
+
     private
 
     def storage_service(service = nil)

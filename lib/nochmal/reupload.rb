@@ -51,7 +51,7 @@ module Nochmal
     end
 
     def reupload_type(model, type)
-      collection = model.send("with_attached_#{type}")
+      collection = active_storage.collection(model, type)
       return false unless collection.table_exists?
 
       Output.type(type, collection.count, @mode) do
@@ -62,18 +62,28 @@ module Nochmal
     end
 
     def perform(attachment)
-      blob = attachment.blob
-
       case @mode
-      when :reupload
-        StringIO.open(@from_service.download(blob.key)) do |temp|
-          @to_service.upload(blob.key, temp)
-        end
-
-        Output.print_progress_indicator
-      when :list
-        Output.attachment(blob)
+      when :reupload then do_reupload(attachment)
+      when :list     then do_list(attachment)
       end
+    end
+
+    # individual actions to be performed
+
+    def do_reupload(attachment)
+      blob = active_storage.blob(attachment)
+
+      StringIO.open(@from_service.download(blob.key)) do |temp|
+        @to_service.upload(blob.key, temp)
+      end
+
+      Output.print_progress_indicator
+    end
+
+    def do_list(attachment)
+      filename = Array.wrap(active_storage.blob(attachment)).last
+
+      Output.attachment(filename.try(:key) || filename)
     end
   end
 end
