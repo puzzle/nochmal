@@ -27,6 +27,13 @@ module Nochmal
         print attachment_detail(filename)
       end
 
+      def notes(notes)
+        notes = Array.wrap(notes)
+        return unless notes.any?
+
+        puts reupload_notes(notes)
+      end
+
       def print_progress_indicator
         print green(".")
       end
@@ -72,6 +79,15 @@ module Nochmal
 
       def reupload_footer
         "\nAll attachments have been processed!"
+      end
+
+      def reupload_notes(notes)
+        <<~NOTES
+
+          ================================================================================
+          #{notes.join("\n")}
+          ================================================================================
+        NOTES
       end
 
       def green(string)

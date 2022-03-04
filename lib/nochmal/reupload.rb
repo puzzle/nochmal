@@ -12,6 +12,7 @@ module Nochmal
       @active_storage = helper || ActiveStorageHelper.new
       @from_service = active_storage.from_storage_service(from.to_sym)
       @to_service = active_storage.to_storage_service(to&.to_sym)
+      @notes = []
     end
 
     def all
@@ -36,6 +37,7 @@ module Nochmal
           reupload_model(model)
         end
       end
+      Output.notes(@notes)
     end
 
     def models
@@ -57,6 +59,8 @@ module Nochmal
     def reupload_type(model, type)
       collection = active_storage.collection(model, type)
       return false unless collection.table_exists?
+
+      @notes << "- #{model}.has_one_attached #{active_storage.migration_method(type)}" if @mode == :migrate
 
       Output.type(type, collection.count, @mode) do
         collection.find_each do |item|

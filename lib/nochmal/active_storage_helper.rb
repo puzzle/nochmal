@@ -41,6 +41,10 @@ module Nochmal
       attachment.blob
     end
 
+    def migration_method(type)
+      type.to_sym
+    end
+
     private
 
     def storage_service(service = nil)
