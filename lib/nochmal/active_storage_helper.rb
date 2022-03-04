@@ -39,6 +39,8 @@ module Nochmal
                           model
                         end
 
+      # require 'pry'; binding.pry if model == ActionText::RichText
+
       maybe_sti_scope.send(:"with_attached_#{type}").joins(:"#{type}_attachment")
     end
 
