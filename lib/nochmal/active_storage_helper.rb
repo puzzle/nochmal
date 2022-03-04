@@ -33,7 +33,7 @@ module Nochmal
     end
 
     def collection(model, type)
-      model.send(:"with_attached_#{type}")
+      model.send(:"with_attached_#{type}").joins(:"#{type}_attachment")
     end
 
     def blob(attachment)
