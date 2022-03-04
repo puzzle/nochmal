@@ -18,7 +18,6 @@ module Nochmal
         ActiveRecord::Base
           .descendants
           .reject(&:abstract_class?)
-          .reject { |model| polymorphic?(model) }
           .reject { |model| storage_model?(model) }
           .select { |model| attachment?(model) }
       end
@@ -79,6 +78,8 @@ module Nochmal
 
     def attachment?(model)
       model.reflect_on_all_associations.any? do |assoc|
+        next if assoc.options[:polymorphic] # the class cannot be checked for polymorphic associactions
+
         assoc.klass == ActiveStorage::Attachment
       end
     end
