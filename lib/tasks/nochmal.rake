@@ -31,7 +31,7 @@ namespace :nochmal do
     from = "unused-but-call-me-ishmael" # is carrierwave-migration my white whale?
     to = args[:to] || ENV["REUPLOAD_TO"]
 
-    Nochmal::Reupload.new(from: from, to: to, helper: Nochmal::CarrierwaveMigrationHelper.new).migrate
+    Nochmal::Reupload.new(from: from, to: to, helper: Nochmal::Adapters::CarrierwaveMigration.new).migrate
   end
 
   desc "Count uploads from carrierwave to active_storage"
@@ -40,7 +40,7 @@ namespace :nochmal do
     from = "unused-but-call-me-ishmael" # is carrierwave-migration my white whale?
     to = args[:to] || ENV["REUPLOAD_TO"]
 
-    Nochmal::Reupload.new(from: from, to: to, helper: Nochmal::CarrierwaveMigrationHelper.new).count
+    Nochmal::Reupload.new(from: from, to: to, helper: Nochmal::Adapters::CarrierwaveMigration.new).count
   end
 
   # desc "Things that need to be done to migrate from carrierwave to active_storage"
