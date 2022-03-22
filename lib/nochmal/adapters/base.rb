@@ -31,6 +31,10 @@ module Nochmal
         raise "Return the data of the attachment in your adapter-subclass"
       end
 
+      def notes(_model = nil, _type = nil); end
+
+      def cleanup(_model = nil, _type = nil); end
+
       private
 
       def maybe_sti_scope(model)

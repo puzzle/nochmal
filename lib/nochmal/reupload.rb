@@ -44,7 +44,8 @@ module Nochmal
           reupload_model(model)
         end
       end
-      Output.notes(@notes)
+      @notes << active_storage.notes
+      Output.notes(@notes.compact)
     end
 
     def models
@@ -74,13 +75,15 @@ module Nochmal
     def reupload_type(model, type)
       collection = active_storage.collection(model, type)
 
-      @notes << "- #{model}.has_one_attached #{active_storage.migration_method(type)}" if @mode == :migrate
+      @notes << active_storage.notes(model, type)
 
       Output.type(type, collection.count, @mode) do
         collection.find_each do |item|
-          perform(item.send(type), type)
+          perform(item, type)
         end
       end
+
+      active_storage.cleanup(model, type)
     end
 
     def perform(attachment, type)
@@ -114,6 +117,7 @@ module Nochmal
 
         Output.print_progress_indicator
       else
+        @notes << "#{pathname} was not found, but was attachted to #{model}"
         Output.print_failure_indicator
       end
     end

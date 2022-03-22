@@ -35,7 +35,36 @@ module Nochmal
       def blob(attachment)
         [attachment.model, Pathname.new(attachment.file.file)]
       end
-  
+
+      def notes(model = nil, type = nil)
+        return display_helper_notes unless model && type
+
+        uploader = uploader(model, type)
+
+        [
+          carrierwave_change(model, type, uploader),
+          active_storage_change(type, uploader),
+          "\n"
+        ].join
+      end
+
+      def cleanup(model = nil, type = nil)
+        ::ActiveStorage::Attachment
+          .where(record_type: model.base_class, name: migration_method(type).to_s)
+          .update_all(name: type.to_s)
+      end
+
+      private
+
+      def carrierwave_change(model, type, uploader)
+      end
+
+      def active_storage_change(type, uploader)
+      end
+
+      def display_helper_notes
+      end
+
       def migration_method(type)
         :"carrierwave_#{type}"
       end
