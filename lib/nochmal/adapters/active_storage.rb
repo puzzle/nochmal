@@ -34,23 +34,11 @@ module Nochmal
       end
 
       def collection(model, type)
-        maybe_sti_scope = if !model.descends_from_active_record? || model.descendants.any?
-                            model.where(type: model.sti_name)
-                          else
-                            model
-                          end
-
-        # require 'pry'; binding.pry if model == ActionText::RichText
-
         maybe_sti_scope.send(:"with_attached_#{type}").joins(:"#{type}_attachment")
       end
 
       def blob(attachment)
         attachment.blob
-      end
-
-      def migration_method(type)
-        type.to_sym
       end
 
       private
@@ -68,12 +56,6 @@ module Nochmal
           erb = ERB.new(file.read).result
           yaml = YAML.safe_load(erb)
           ::ActiveStorage::Service::Configurator.new(yaml).configurations
-        end
-      end
-
-      def polymorphic?(model)
-        model.reflect_on_all_associations.map(&:options).any? do |options|
-          options[:polymorphic]
         end
       end
 
