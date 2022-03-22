@@ -16,16 +16,16 @@ module Nochmal
         @models_with_attachments ||= begin
           Rails.application.eager_load!
 
-          ActiveRecord::Base
-            .descendants
-            .reject(&:abstract_class?)
-            .reject { |model| storage_model?(model) }
-            .select { |model| attachment?(model) }
+          ::ActiveStorage::Attachment
+            .select(:record_type).distinct.pluck(:record_type)
+            .compact.map(&:constantize)
+            .map do |model|
+              ([model] + model.descendants).find { |child_or_self| attachment?(child_or_self) }
+            end
         end
       end
 
       def attachment_types_for(model)
-        @types ||= {}
         @types[model] ||=
           model
           .methods
@@ -34,7 +34,9 @@ module Nochmal
       end
 
       def collection(model, type)
-        maybe_sti_scope.send(:"with_attached_#{type}").joins(:"#{type}_attachment")
+        ::ActiveStorage::Attachment
+          .where(name: type)
+          .where(record_type: model.base_class.sti_name)
       end
 
       def blob(attachment)
@@ -59,18 +61,9 @@ module Nochmal
         end
       end
 
-      def storage_model?(model)
-        attachment_models = [::ActiveStorage::Blob, ::ActiveStorage::Attachment]
-
-        attachment_models.any? do |am|
-          model == am || model.is_a?(am)
-        end
-      end
-
       def attachment?(model)
         model.reflect_on_all_associations.any? do |assoc|
           next if assoc.options[:polymorphic] # the class cannot be checked for polymorphic associactions
-          next unless assoc.has_one? # filters out has_many_attached
 
           assoc.klass == ::ActiveStorage::Attachment
         end
