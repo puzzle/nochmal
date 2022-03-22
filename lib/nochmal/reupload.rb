@@ -104,15 +104,18 @@ module Nochmal
       Output.print_progress_indicator
     end
 
-    def do_migrate(attachment, type)
-      model, pathname = active_storage.blob(attachment)
+    def do_migrate(record, type)
+      model, pathname = active_storage.blob(record.send(type))
 
-      StringIO.open(pathname.read) do |temp|
-        model.send(active_storage.migration_method(type))
-             .attach(io: temp, filename: pathname.basename)
+      if pathname.exist?
+        StringIO.open(pathname.read) do |temp|
+          model.send(active_storage.migration_method(type)).attach(io: temp, filename: pathname.basename)
+        end
+
+        Output.print_progress_indicator
+      else
+        Output.print_failure_indicator
       end
-
-      Output.print_progress_indicator
     end
 
     def do_list(attachment)

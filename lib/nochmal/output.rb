@@ -43,6 +43,10 @@ module Nochmal
         print green(".")
       end
 
+      def print_failure_indicator
+        print red("F")
+      end
+
       private
 
       def reupload_header(models)
@@ -97,6 +101,10 @@ module Nochmal
 
       def green(string)
         "\033[32m#{string}\033[0m"
+      end
+
+      def red(string)
+        "\033[31m#{string}\033[0m"
       end
     end
   end
