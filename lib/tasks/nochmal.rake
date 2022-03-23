@@ -25,30 +25,21 @@ namespace :nochmal do
     Nochmal::Reupload.new(from: from).count
   end
 
-  desc "Migrate uploads from carrierwave to active_storage"
-  # task :carrierwave_files, %i[to] => :environment do |_t, args|
-  task :carrierwave, %i[to] => :environment do |_t, args|
-    from = "unused-but-call-me-ishmael" # is carrierwave-migration my white whale?
-    to = args[:to] || ENV["REUPLOAD_TO"]
+  namespace :carrierwave do
+    desc "Count uploads from carrierwave to active_storage"
+    task :analyze, %i[to] => :environment do |_t, args|
+      from = "unused-but-call-me-ishmael" # is carrierwave-migration my white whale?
+      to = args[:to] || ENV["REUPLOAD_TO"]
 
-    Nochmal::Reupload.new(from: from, to: to, helper: Nochmal::Adapters::CarrierwaveMigration.new).migrate
+      Nochmal::Reupload.new(from: from, to: to, helper: Nochmal::Adapters::CarrierwaveMigration.new).count
+    end
+
+    desc "Migrate uploads from carrierwave to active_storage"
+    task :migrate, %i[to] => :environment do |_t, args|
+      from = "unused-but-call-me-ishmael" # is carrierwave-migration my white whale?
+      to = args[:to] || ENV["REUPLOAD_TO"]
+
+      Nochmal::Reupload.new(from: from, to: to, helper: Nochmal::Adapters::CarrierwaveMigration.new).all
+    end
   end
-
-  desc "Count uploads from carrierwave to active_storage"
-  # task :carrierwave_files, %i[to] => :environment do |_t, args|
-  task :carrierwave_count, %i[to] => :environment do |_t, args|
-    from = "unused-but-call-me-ishmael" # is carrierwave-migration my white whale?
-    to = args[:to] || ENV["REUPLOAD_TO"]
-
-    Nochmal::Reupload.new(from: from, to: to, helper: Nochmal::Adapters::CarrierwaveMigration.new).count
-  end
-
-  # desc "Things that need to be done to migrate from carrierwave to active_storage"
-  # task :carrierwave, %i[to] => :environment do |_t, args|
-  #   to = args[:to] || ENV["REUPLOAD_TO"]
-  #   Rake::Task["nochmal:carrierwave_files"].call(to)
-  #   # generate migration to change attachment-name (remove carrierwave_ prefix)
-  #   # change mount_uploader to has_one_attached
-  #   # list view containing calls to image-helpers
-  # end
 end

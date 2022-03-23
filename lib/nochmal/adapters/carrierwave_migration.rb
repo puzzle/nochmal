@@ -54,6 +54,21 @@ module Nochmal
           .update_all(name: type.to_s)
       end
 
+      def reupload(record, type)
+        model, pathname = blob(record.send(type))
+
+        if pathname.exist?
+          StringIO.open(pathname.read) do |temp|
+            model.send(migration_method(type)).attach(io: temp, filename: pathname.basename)
+          end
+
+          Output.print_progress_indicator
+        else
+          Output.print_failure_indicator
+          "#{pathname} was not found, but was attachted to #{model}"
+        end
+      end
+
       private
 
       def carrierwave_change(model, type, uploader)

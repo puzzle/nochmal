@@ -23,10 +23,6 @@ module Nochmal
       handle_each_model(:list)
     end
 
-    def migrate
-      handle_each_model(:migrate)
-    end
-
     def count
       handle_each_model(:count)
     end
@@ -79,7 +75,8 @@ module Nochmal
 
       Output.type(type, collection.count, @mode) do
         collection.find_each do |item|
-          perform(item, type)
+          result = perform(item, type)
+          @notes << result if result.present?
         end
       end
 
@@ -88,39 +85,13 @@ module Nochmal
 
     def perform(attachment, type)
       case @mode
-      when :reupload then do_reupload(attachment)
-      when :migrate  then do_migrate(attachment, type)
+      when :reupload then @active_storage.reupload(attachment, type)
       when :list     then do_list(attachment)
       when :count    then Output.print_progress_indicator
       end
     end
 
     # individual actions to be performed
-
-    def do_reupload(attachment)
-      blob = active_storage.blob(attachment)
-
-      StringIO.open(@from_service.download(blob.key)) do |temp|
-        @to_service.upload(blob.key, temp)
-      end
-
-      Output.print_progress_indicator
-    end
-
-    def do_migrate(record, type)
-      model, pathname = active_storage.blob(record.send(type))
-
-      if pathname.exist?
-        StringIO.open(pathname.read) do |temp|
-          model.send(active_storage.migration_method(type)).attach(io: temp, filename: pathname.basename)
-        end
-
-        Output.print_progress_indicator
-      else
-        @notes << "#{pathname} was not found, but was attachted to #{model}"
-        Output.print_failure_indicator
-      end
-    end
 
     def do_list(attachment)
       filename = Array.wrap(active_storage.blob(attachment)).last

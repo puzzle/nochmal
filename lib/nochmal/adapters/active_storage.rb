@@ -43,6 +43,16 @@ module Nochmal
         attachment.blob
       end
 
+      def reupload(attachment, _type)
+        blob = blob(attachment)
+
+        StringIO.open(@from_service.download(blob.key)) do |temp|
+          @to_service.upload(blob.key, temp)
+        end
+
+        Output.print_progress_indicator
+      end
+
       private
 
       def storage_service(service = nil)
