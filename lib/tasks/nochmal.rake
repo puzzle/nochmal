@@ -26,20 +26,25 @@ namespace :nochmal do
   end
 
   namespace :carrierwave do
-    desc "Count uploads from carrierwave to active_storage"
+    desc "Analyse uploaders and suggest change to migrate from carrierwave to active_storage"
     task :analyze, %i[to] => :environment do |_t, args|
-      from = "unused-but-call-me-ishmael" # is carrierwave-migration my white whale?
       to = args[:to] || ENV["REUPLOAD_TO"]
 
-      Nochmal::Reupload.new(from: from, to: to, helper: Nochmal::Adapters::CarrierwaveMigration.new).count
+      Nochmal::Reupload.new(from: :unused, to: to, helper: Nochmal::Adapters::CarrierwaveAnalyze.new).all
     end
 
     desc "Migrate uploads from carrierwave to active_storage"
     task :migrate, %i[to] => :environment do |_t, args|
-      from = "unused-but-call-me-ishmael" # is carrierwave-migration my white whale?
       to = args[:to] || ENV["REUPLOAD_TO"]
 
-      Nochmal::Reupload.new(from: from, to: to, helper: Nochmal::Adapters::CarrierwaveMigration.new).all
+      Nochmal::Reupload.new(from: :unused, to: to, helper: Nochmal::Adapters::CarrierwaveMigration.new).all
+    end
+
+    desc "Count uploads to be migrated from carrierwave to active_storage"
+    task :count, %i[to] => :environment do |_t, args|
+      to = args[:to] || ENV["REUPLOAD_TO"]
+
+      Nochmal::Reupload.new(from: :unused, to: to, helper: Nochmal::Adapters::CarrierwaveMigration.new).count
     end
   end
 end

@@ -62,9 +62,8 @@ module Nochmal
 
     def skip_model?(model)
       !model.table_exists? || # no table
-        model.count.zero? || # no records
         types(model).all? do |type| # no uploads of any kind (type)
-          active_storage.collection(model, type).count.zero?
+          active_storage.empty_collection?(model, type)
         end
     end
 
@@ -85,18 +84,10 @@ module Nochmal
 
     def perform(attachment, type)
       case @mode
-      when :reupload then @active_storage.reupload(attachment, type)
-      when :list     then do_list(attachment)
-      when :count    then Output.print_progress_indicator
+      when :reupload then active_storage.reupload(attachment, type)
+      when :list     then active_storage.list(attachment)
+      when :count    then active_storage.count
       end
-    end
-
-    # individual actions to be performed
-
-    def do_list(attachment)
-      filename = Array.wrap(active_storage.blob(attachment)).last
-
-      Output.attachment(filename.try(:key) || filename)
     end
   end
 end

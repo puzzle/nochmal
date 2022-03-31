@@ -7,6 +7,8 @@ module Nochmal
   module Adapters
     autoload :Base,                 "nochmal/adapters/base"
     autoload :ActiveStorage,        "nochmal/adapters/active_storage"
+    autoload :Carrierwave,          "nochmal/adapters/carrierwave"
+    autoload :CarrierwaveAnalyze,   "nochmal/adapters/carrierwave_analyze"
     autoload :CarrierwaveMigration, "nochmal/adapters/carrierwave_migration"
   end
 

@@ -27,12 +27,32 @@ module Nochmal
         raise "Return a Scope or Enumerable of Records with attachments of a type in your adapter-subclass"
       end
 
+      def empty_collection?(model, type)
+        model.count.zero? || # no records
+          collection(model, type).count.zero? # no uploads of a type
+      end
+
       def blob(_attachment)
         raise "Return the data of the attachment in your adapter-subclass"
       end
 
       def notes(_model = nil, _type = nil); end
 
+      def reupload(_attachment, _type)
+        raise "Upload the attachment (of a certain type) NOCHMAL!!! in your adapter subclass"
+      end
+
+      def count
+        Output.print_progress_indicator
+      end
+
+      def list(attachment)
+        filename = Array.wrap(blob(attachment)).last
+
+        Output.attachment(filename.try(:key) || filename)
+      end
+
+      # called after handling each type
       def cleanup(_model = nil, _type = nil); end
 
       private
