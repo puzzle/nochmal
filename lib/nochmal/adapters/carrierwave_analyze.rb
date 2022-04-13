@@ -48,6 +48,9 @@ module Nochmal
       def carrierwave_change(model, type, uploader)
         <<~TEXT
           # replace #{model.name.underscore}.#{type}_url in your views
+          # replace #{model.name.underscore}.#{type} in your views
+          # maybe search for #{type} in your codebase to find everything...
+          #
           # Change carrierwave-uploader in #{model.name}:
           class #{model.name}
             mount_uploader :#{prefixed(type)}, #{uploader.name}, mount_on: '#{type}'
