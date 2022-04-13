@@ -68,6 +68,10 @@ module Nochmal
               #{versions.join}
             end
           # uploader #{type} has #{versions.size} versions
+
+            # allow removal, carrierwave-style
+            def remove_#{type}; false end
+            def remove_#{type}=(delete_it); #{type}.purge_later if delete_it; end
         TEXT
       end
 
