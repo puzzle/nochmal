@@ -24,8 +24,16 @@ module Nochmal
         false # simulate that uploads exist
       end
 
-      def notes(model = nil, type = nil)
-        return [display_helper_notes, gemfile_additions].join("\n") unless model && type
+      # hooks
+
+      def general_notes
+        [
+          display_helper_notes,
+          gemfile_additions
+        ].join("\n")
+      end
+
+      def type_notes(model = nil, type = nil)
         return nil if @carrierwave_changed.include?(model.base_class.sti_name)
 
         @carrierwave_changed << model.base_class.sti_name
@@ -38,6 +46,8 @@ module Nochmal
           uploader_change(uploader), "\n"
         ].join
       end
+
+      # actions
 
       def reupload(_record, _type)
         Output.print_progress_indicator

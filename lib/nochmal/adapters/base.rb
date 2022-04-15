@@ -36,7 +36,30 @@ module Nochmal
         raise "Return the data of the attachment in your adapter-subclass"
       end
 
-      def notes(_model = nil, _type = nil); end
+      # hooks
+
+      # called before doing any action or even lookup
+      def setup; end
+
+      # called after outputing the final notes, before returning from the last method
+      def teardown; end
+
+      # called after all reuploading/listing/counting
+      def general_notes; end
+
+      # called before uploading a type
+      def type_notes(_model, _type); end
+
+      # called after each model (class)
+      def model_completed(_model, _type); end
+
+      # called after handling each type (uploader/attachment-type)
+      def type_completed(_model, _type); end
+
+      # called after reuploading/listing/counting each record/attachment
+      def item_completed(_item, _type); end
+
+      # actions
 
       def reupload(_attachment, _type)
         raise "Upload the attachment (of a certain type) NOCHMAL!!! in your adapter subclass"
@@ -51,9 +74,6 @@ module Nochmal
 
         Output.attachment(filename.try(:key) || filename)
       end
-
-      # called after handling each type
-      def cleanup(_model = nil, _type = nil); end
 
       private
 
