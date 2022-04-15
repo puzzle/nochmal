@@ -204,12 +204,9 @@ module Nochmal
         TEXT
 
         validation_dependencies = <<~TEXT
-          gem 'active_storage_validations' # validate filesize, dimensions and content-type
-          # sadly, both mini_magick AND vips need to be here, because the gem
-          # references those constants in the source, even if they are not used
-          # See https://github.com/igorkasyanchuk/active_storage_validations
-          gem 'mini_magick'
-          gem 'vips'
+          # validate filesize, dimensions and content-type
+          # could be an official release if newer than 0.9.7
+          gem 'active_storage_validations', github: 'igorkasyanchuk/active_storage_validations'
         TEXT
 
         <<~TEXT
