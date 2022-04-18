@@ -13,15 +13,17 @@ module Nochmal
           It seems like the migration has already been started.
 
           You may want to resume with
-
             rails nochmal:carrierwave:resume
 
           Alternatively, you can manually delete the tables
-
             - #{Status.table_name}
             - #{Meta.table_name}
-
           and rerun the migration completely.
+
+          If you want, you can examine the status by interacting with
+            - Nochmal::MigrationData::Meta # class/attachment-level stats
+            - Nochmal::MigrationData::Status # individual upload stats
+          in your rails console.
         ERROR
       end
     end

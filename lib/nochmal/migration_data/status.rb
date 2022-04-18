@@ -11,7 +11,6 @@ module Nochmal
       DONE = "done"
 
       def self.track(record, type, pathname)
-
         new(
           record: record,
           uploader_type: type,
@@ -20,13 +19,8 @@ module Nochmal
         ).save!
       end
 
-      def migrated?(record, type, pathname)
-        where(
-          record: record,
-          uploader_type: type,
-          filename: pathname,
-          status: DONE
-        ).count == 1
+      def migrated?
+        status == DONE
       end
     end
   end

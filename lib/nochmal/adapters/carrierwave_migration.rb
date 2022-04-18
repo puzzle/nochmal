@@ -59,13 +59,12 @@ module Nochmal
         MigrationData::Meta
           .find_or_create_by(record_type: model.sti_name, uploader_type: type)
           .update(migrated: migrated(model, type))
-          .update_status!
       end
 
       private
 
       def completely_done?
-        MigrationData::Meta.all?(&:done?)
+        MigrationData::Meta.all.all?(&:done?)
       end
 
       def migrated(model, type)

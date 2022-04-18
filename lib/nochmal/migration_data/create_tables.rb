@@ -2,7 +2,7 @@
 
 module Nochmal
   module MigrationData
-    class CreateMigrationTables < ActiveRecord::Base[6.1] # :nodoc:
+    class CreateMigrationTables < ActiveRecord::Migration[6.1] # :nodoc:
       def up # rubocop:disable Metrics/MethodLength
         create_table :nochmal_migration_data_status do |t|
           t.belongs_to :record, polymorphic: true

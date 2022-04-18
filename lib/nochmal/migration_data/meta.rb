@@ -6,22 +6,30 @@ module Nochmal
     class Meta < ActiveRecord::Base
       self.table_name = :nochmal_migration_data_meta
 
-      def update_status
-        self.status =
-          case migrated <=> expected
-          when -1 then :partial
-          when 0  then :done
-          when 1  then :too_much
-          end
-      end
-
-      def update_status!
-        update_status
-        save!
-      end
+      before_save :update_status
 
       def done?
         status.to_s == "done"
+      end
+
+      private
+
+      def update_status
+        self.status = current_status
+      end
+
+      def current_status # rubocop:disable Metrics/CyclomaticComplexity
+        return nil if migrated.nil? && expected.nil?
+
+        if expected.positive? && migrated.nil?
+          "not migrated"
+        else
+          case migrated.to_i <=> expected
+          when -1 then "partial"
+          when 0  then "done"
+          when 1  then "too much"
+          end
+        end
       end
     end
   end
