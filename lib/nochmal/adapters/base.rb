@@ -51,7 +51,7 @@ module Nochmal
       def type_notes(_model, _type); end
 
       # called after each model (class)
-      def model_completed(_model, _type); end
+      def model_completed(_model); end
 
       # called after handling each type (uploader/attachment-type)
       def type_completed(_model, _type); end
