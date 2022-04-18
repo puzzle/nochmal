@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "pastel"
+
 module Nochmal
   # Handles output for the Reupload Task
   class Output
@@ -12,7 +14,7 @@ module Nochmal
 
       def model(model, skipping: false)
         if skipping
-          puts "Skipping #{green(model)}"
+          puts "Skipping #{pastel.green(model)}"
           return true
         end
 
@@ -40,18 +42,22 @@ module Nochmal
       end
 
       def print_progress_indicator
-        print green(".")
+        print pastel.green(".")
       end
 
       def print_failure_indicator
-        print red("F")
+        print pastel.red("F")
+      end
+
+      def print_skip_indicator
+        print pastel.yellow("*")
       end
 
       private
 
       def reupload_header(models)
         model_text = "model".pluralize(models.count)
-        model_names = models.map { |model| green(model) }.join(", ")
+        model_names = models.map { |model| pastel.green(model) }.join(", ")
 
         <<~HEADER
 
@@ -63,11 +69,11 @@ module Nochmal
       end
 
       def model_header(model)
-        "Model #{green(model)}"
+        "Model #{pastel.green(model)}"
       end
 
       def type_header(type)
-        "  Type #{green(type)}"
+        "  Type #{pastel.green(type)}"
       end
 
       def attachment_summary(count, action)
@@ -99,12 +105,8 @@ module Nochmal
         NOTES
       end
 
-      def green(string)
-        "\033[32m#{string}\033[0m"
-      end
-
-      def red(string)
-        "\033[31m#{string}\033[0m"
+      def pastel
+        Pastel.new
       end
     end
   end
