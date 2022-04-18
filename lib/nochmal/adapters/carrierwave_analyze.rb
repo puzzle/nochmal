@@ -204,9 +204,7 @@ module Nochmal
         TEXT
 
         validation_dependencies = <<~TEXT
-          # validate filesize, dimensions and content-type
-          # could be an official release if newer than 0.9.7
-          gem 'active_storage_validations', github: 'igorkasyanchuk/active_storage_validations'
+          gem 'active_storage_validations' # validate filesize, dimensions and content-type
         TEXT
 
         <<~TEXT
