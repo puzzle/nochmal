@@ -12,18 +12,67 @@ module Nochmal
       end
 
       def reupload(record, type)
-        model, pathname = blob(record.send(type))
+        _record, pathname = blob(record.send(type))
 
         if pathname.exist?
           StringIO.open(pathname.read) do |temp|
-            model.send(not_prefixed(type)).attach(io: temp, filename: pathname.basename)
+            record.send(not_prefixed(type)).attach(io: temp, filename: pathname.basename)
           end
 
           Output.print_progress_indicator
         else
           Output.print_failure_indicator
-          "#{pathname} was not found, but was attachted to #{model}"
+          "#{pathname} was not found, but was attached to #{record}"
         end
+      end
+
+      def collection(model, uploader)
+        super(model, uploader).tap do |scope|
+          MigrationData::Meta.find_or_create_by(
+            record_type: maybe_sti_scope(model).sti_name,
+            uploader_type: uploader
+          ).update(expected: scope.count)
+        end
+      end
+
+      # hooks
+
+      def setup
+        raise MigrationData::StatusExists if MigrationData::Status.table_exists?
+
+        MigrationData::CreateMigrationTables.new.up
+      end
+
+      def teardown
+        raise MigrationData::Incomplete unless completely_done?
+
+        MigrationData::DropMigrationTables.new.up
+      end
+
+      def item_completed(record, type)
+        _, pathname = blob(record.send(type))
+
+        MigrationData::Status.track(record, type, pathname)
+      end
+
+      def type_completed(model, type)
+        MigrationData::Meta
+          .find_or_create_by(record_type: model.sti_name, uploader_type: type)
+          .update(migrated: migrated(model, type))
+          .update_status!
+      end
+
+      private
+
+      def completely_done?
+        MigrationData::Meta.all?(&:done?)
+      end
+
+      def migrated(model, type)
+        MigrationData::Status
+          .where(record_type: model.sti_name, uploader_type: type)
+          .where(status: MigrationData::Status::DONE)
+          .count
       end
     end
   end

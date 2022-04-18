@@ -8,7 +8,7 @@ module Nochmal
 
       def update_status
         self.status =
-          case migrated <=> total
+          case migrated <=> expected
           when -1 then :partial
           when 0  then :done
           when 1  then :too_much
@@ -18,6 +18,10 @@ module Nochmal
       def update_status!
         update_status
         save!
+      end
+
+      def done?
+        status.to_s == "done"
       end
     end
   end
