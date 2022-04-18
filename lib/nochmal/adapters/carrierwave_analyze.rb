@@ -24,6 +24,12 @@ module Nochmal
         false # simulate that uploads exist
       end
 
+      # actions
+
+      def reupload(_record, _type)
+        Output.print_progress_indicator
+      end
+
       # hooks
 
       def general_notes
@@ -45,12 +51,6 @@ module Nochmal
           validation_notes(model, type, uploader),
           uploader_change(uploader), "\n"
         ].join
-      end
-
-      # actions
-
-      def reupload(_record, _type)
-        Output.print_progress_indicator
       end
 
       private
