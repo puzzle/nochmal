@@ -10,8 +10,6 @@ module Nochmal
 
     def initialize(from:, to: nil, helper: nil)
       @active_storage = helper || Adapters::ActiveStorage.new
-      @from_service = active_storage.from_storage_service(from.to_sym)
-      @to_service = active_storage.to_storage_service(to&.to_sym)
       @notes = []
     end
 
