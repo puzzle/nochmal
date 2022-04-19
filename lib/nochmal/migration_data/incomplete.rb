@@ -4,7 +4,7 @@ module Nochmal
   module MigrationData
     # A migration may not be complete...
     class Incomplete < StandardError
-      def initialize(_)
+      def initialize(*_args)
         super <<~MESSAGE
           This did not end well...
 
