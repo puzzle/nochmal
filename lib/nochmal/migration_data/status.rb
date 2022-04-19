@@ -8,6 +8,9 @@ module Nochmal
 
       belongs_to :record, polymorphic: true
 
+      scope :missing, -> { where(status: "missing") }
+      scope :ok, -> { where(status: "ok") }
+
       def migrated?
         status.present?
       end
