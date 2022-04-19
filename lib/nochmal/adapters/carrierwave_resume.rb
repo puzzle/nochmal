@@ -9,7 +9,10 @@ module Nochmal
       def reupload(record, type)
         _, pathname = blob(record.send(type))
 
-        status = MigrationData::Status.find_by(record: record, uploader_type: type, filename: pathname.to_s)
+        status = MigrationData::Status.find_by(
+          record_id: record.id, record_type: record.class.sti_name,
+          uploader_type: type, filename: pathname.to_s
+        )
 
         if status&.migrated?
           message = status.missing_message if status.missing?

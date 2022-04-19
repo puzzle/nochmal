@@ -28,10 +28,7 @@ module Nochmal
 
       def collection(model, uploader)
         super(model, uploader).tap do |scope|
-          MigrationData::Meta.find_or_create_by(
-            record_type: maybe_sti_scope(model).sti_name,
-            uploader_type: uploader
-          ).update(expected: scope.count)
+          type_started(model, uploader, scope.count)
         end
       end
 
@@ -71,11 +68,20 @@ module Nochmal
         return if @mode == :count
 
         MigrationData::Meta
-          .find_or_create_by(record_type: model.sti_name, uploader_type: type)
+          .find_by(record_type: model.sti_name, uploader_type: type)
           .update(migrated: migrated(model, type))
       end
 
       private
+
+      def type_started(model, uploader, count)
+        return if @mode == :count
+
+        MigrationData::Meta.find_or_create_by(
+          record_type: model.sti_name,
+          uploader_type: uploader
+        ).update(expected: count)
+      end
 
       def completely_done?
         MigrationData::Meta.all.all?(&:done?)
