@@ -47,7 +47,7 @@ module Nochmal
         return if @mode == :count
         raise MigrationData::Incomplete unless completely_done?
 
-        MigrationData::DropMigrationTables.new.up
+        MigrationData::CreateMigrationTables.new.down
       end
 
       def item_completed(record, type, status)
