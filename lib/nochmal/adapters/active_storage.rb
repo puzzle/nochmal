@@ -43,6 +43,8 @@ module Nochmal
         attachment.blob
       end
 
+      # actions
+
       def reupload(attachment, _type)
         blob = blob(attachment)
 
