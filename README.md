@@ -66,8 +66,8 @@ The migration from Carrierwave is mostly series manual steps, nochmal provides s
 
 - [x] Works for `has_one_attached` attachments
 - [x] Works for `has_many_attached` attachments
-- [x] Works for single-file carrierwave-uploaders
-- [ ] Does not yet work for multi-file carrerwave-uploaders
+- [x] Works for single-file disk-based carrierwave-uploaders
+- [ ] Does not yet work for multi-file carrierwave-uploaders
 - [ ] Does not yet help you with migrating from paperclip
 
 ## What about the name?

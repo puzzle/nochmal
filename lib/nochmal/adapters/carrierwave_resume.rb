@@ -32,7 +32,7 @@ module Nochmal
 
         Output.notes [
           "It appears that no previous migration has been running.",
-          'Creating the needed tables and "resume from spare 1"...'
+          'Creating the needed tables and "resuming from square 1"...'
         ]
         super
       end
