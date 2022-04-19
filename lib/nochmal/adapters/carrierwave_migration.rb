@@ -46,6 +46,7 @@ module Nochmal
       def teardown
         return if @mode == :count
         raise MigrationData::Incomplete unless completely_done?
+        return if ENV["NOCHMAL_KEEP_METADATA"].present?
 
         MigrationData::CreateMigrationTables.new.down
       end
