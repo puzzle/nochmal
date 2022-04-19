@@ -8,7 +8,7 @@ module Nochmal
         super <<~MESSAGE
           This did not end well...
 
-            #{Meta.all.map(&:inspect).join("\n  ")}
+            #{Meta.all.map(&:to_s).join("\n  ")}
 
           Care to clean up the mess?
         MESSAGE

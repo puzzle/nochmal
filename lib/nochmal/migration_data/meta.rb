@@ -12,6 +12,13 @@ module Nochmal
         status.to_s == "done"
       end
 
+      def to_s
+        [
+          record_type, "#", uploader_type, ": ",
+          migrated, "/", expected, " -> ", status
+        ].join
+      end
+
       private
 
       def update_status
