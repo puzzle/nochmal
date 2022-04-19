@@ -8,19 +8,16 @@ module Nochmal
 
       belongs_to :record, polymorphic: true
 
-      DONE = "done"
-
-      def self.track(record, type, pathname)
-        new(
-          record: record,
-          uploader_type: type,
-          filename: pathname,
-          status: DONE
-        ).save!
+      def migrated?
+        status.present?
       end
 
-      def migrated?
-        status == DONE
+      def missing?
+        status.to_s == "missing"
+      end
+
+      def missing_message
+        "#{filename} was not found, but was attached to #{record}"
       end
     end
   end

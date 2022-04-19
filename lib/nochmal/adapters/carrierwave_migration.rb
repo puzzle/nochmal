@@ -21,7 +21,8 @@ module Nochmal
 
           { status: :ok }
         else
-          { status: :missing, message: "#{pathname} was not found, but was attached to #{record}" }
+          { status: :missing,
+            message: MigrationData::Status.new(filename: pathname, record: record).missing_message }
         end
       end
 
@@ -54,10 +55,16 @@ module Nochmal
 
       def item_completed(record, type, status)
         return if @mode == :count
-        return unless %i[ok].include? status
+        return unless %i[ok missing].include? status
 
         _, pathname = blob(record.send(type))
-        MigrationData::Status.track(record, type, pathname)
+
+        MigrationData::Status.find_or_create_by(
+          record_id: record.id,
+          record_type: record.class.sti_name,
+          uploader_type: type,
+          filename: pathname.to_s
+        ).update(status: status)
       end
 
       def type_completed(model, type)
@@ -77,7 +84,7 @@ module Nochmal
       def migrated(model, type)
         MigrationData::Status
           .where(record_type: model.sti_name, uploader_type: type)
-          .where(status: MigrationData::Status::DONE)
+          .where.not(status: nil)
           .count
       end
     end

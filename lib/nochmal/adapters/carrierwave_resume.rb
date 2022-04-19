@@ -12,7 +12,8 @@ module Nochmal
         status = MigrationData::Status.find_by(record: record, uploader_type: type, filename: pathname.to_s)
 
         if status&.migrated?
-          { status: :skip }
+          message = status.missing_message if status.missing?
+          { status: :skip, message: message }
         else
           super(record, type)
         end
