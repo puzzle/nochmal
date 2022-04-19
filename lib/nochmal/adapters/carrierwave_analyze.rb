@@ -27,7 +27,7 @@ module Nochmal
       # actions
 
       def reupload(_record, _type)
-        Output.print_progress_indicator
+        { status: :ok } # like count
       end
 
       # hooks

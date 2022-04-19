@@ -56,16 +56,17 @@ module Nochmal
       active_storage.model_completed(model)
     end
 
-    def reupload_type(model, type)
+    def reupload_type(model, type) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
       collection = active_storage.collection(model, type)
-
       @notes << active_storage.type_notes(model, type)
 
       Output.type(type, collection.count, @mode) do
         collection.find_each do |item|
           result = perform(item, type)
-          active_storage.item_completed(item, type)
-          @notes << result if result.present?
+
+          @notes << result[:message]
+          Output.print_result_indicator(result[:status])
+          active_storage.item_completed(item, type, result[:status])
         end
       end
 

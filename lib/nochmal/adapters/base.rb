@@ -62,17 +62,23 @@ module Nochmal
       # actions
 
       def reupload(_attachment, _type)
-        raise "Upload the attachment (of a certain type) NOCHMAL!!! in your adapter subclass"
+        raise <<~ERROR
+          Upload the attachment (of a certain type) NOCHMAL!!! in your adapter subclass
+
+          Please return a Hash with a least a :status-key. If everything is ok, I suggest :ok as value.
+        ERROR
       end
 
       def count
-        Output.print_progress_indicator
+        { status: :ok }
       end
 
       def list(attachment)
         filename = Array.wrap(blob(attachment)).last
 
         Output.attachment(filename.try(:key) || filename)
+
+        { status: :noop }
       end
 
       private

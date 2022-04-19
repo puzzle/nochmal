@@ -50,7 +50,7 @@ module Nochmal
           @to_service.upload(blob.key, temp)
         end
 
-        Output.print_progress_indicator
+        { status: :ok }
       end
 
       private

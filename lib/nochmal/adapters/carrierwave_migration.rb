@@ -19,10 +19,9 @@ module Nochmal
             record.send(not_prefixed(type)).attach(io: temp, filename: pathname.basename)
           end
 
-          Output.print_progress_indicator
+          { status: :ok }
         else
-          Output.print_failure_indicator
-          "#{pathname} was not found, but was attached to #{record}"
+          { status: :missing, message: "#{pathname} was not found, but was attached to #{record}" }
         end
       end
 

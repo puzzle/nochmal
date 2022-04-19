@@ -41,6 +41,16 @@ module Nochmal
         puts reupload_notes(notes)
       end
 
+      def print_result_indicator(status)
+        case status
+        when :ok      then print_progress_indicator
+        when :missing then print_failure_indicator
+        when :skip    then print_skip_indicator
+        when :noop    then nil
+        else print_unknown_indicator
+        end
+      end
+
       def print_progress_indicator
         print pastel.green(".")
       end
@@ -51,6 +61,10 @@ module Nochmal
 
       def print_skip_indicator
         print pastel.yellow("*")
+      end
+
+      def print_unknown_indicator
+        print pastel.blue("?")
       end
 
       private
