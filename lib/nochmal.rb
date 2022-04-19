@@ -10,6 +10,7 @@ module Nochmal
     autoload :Carrierwave,          "nochmal/adapters/carrierwave"
     autoload :CarrierwaveAnalyze,   "nochmal/adapters/carrierwave_analyze"
     autoload :CarrierwaveMigration, "nochmal/adapters/carrierwave_migration"
+    autoload :CarrierwaveResume,    "nochmal/adapters/carrierwave_resume"
   end
 
   module MigrationData
