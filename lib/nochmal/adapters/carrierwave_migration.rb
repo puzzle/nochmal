@@ -36,26 +36,33 @@ module Nochmal
 
       # hooks
 
-      def setup
+      def setup(action)
+        @mode = action
+
+        return if @mode == :count
         raise MigrationData::StatusExists if MigrationData::Status.table_exists?
 
         MigrationData::CreateMigrationTables.new.up
       end
 
       def teardown
+        return if @mode == :count
         raise MigrationData::Incomplete unless completely_done?
 
         MigrationData::DropMigrationTables.new.up
       end
 
       def item_completed(record, type, status)
-        return false unless status == :ok
+        return if @mode == :count
+        return unless %i[ok].include? status
 
         _, pathname = blob(record.send(type))
         MigrationData::Status.track(record, type, pathname)
       end
 
       def type_completed(model, type)
+        return if @mode == :count
+
         MigrationData::Meta
           .find_or_create_by(record_type: model.sti_name, uploader_type: type)
           .update(migrated: migrated(model, type))

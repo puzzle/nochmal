@@ -39,7 +39,7 @@ module Nochmal
       # hooks
 
       # called before doing any action or even lookup
-      def setup; end
+      def setup(_reupload_mode); end
 
       # called after outputing the final notes, before returning from the last method
       def teardown; end

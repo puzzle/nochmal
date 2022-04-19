@@ -20,8 +20,11 @@ module Nochmal
 
       # hooks
 
-      def setup
-        return true if MigrationData::Status.table_exists? && MigrationData::Meta.table_exists?
+      def setup(action)
+        if MigrationData::Status.table_exists? && MigrationData::Meta.table_exists?
+          @mode = action
+          return true
+        end
 
         Output.notes [
           "It appears that no previous migration has been running.",

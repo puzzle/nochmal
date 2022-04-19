@@ -31,7 +31,7 @@ module Nochmal
 
     def handle_each_model(action) # rubocop:disable Metrics/MethodLength
       @mode = action
-      active_storage.setup
+      active_storage.setup(@mode)
 
       Output.reupload(models) do
         models.each do |model|
