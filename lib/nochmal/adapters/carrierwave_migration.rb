@@ -48,9 +48,10 @@ module Nochmal
         MigrationData::DropMigrationTables.new.up
       end
 
-      def item_completed(record, type)
-        _, pathname = blob(record.send(type))
+      def item_completed(record, type, status)
+        return false unless status == :ok
 
+        _, pathname = blob(record.send(type))
         MigrationData::Status.track(record, type, pathname)
       end
 
