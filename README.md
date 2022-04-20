@@ -22,6 +22,8 @@ Or install it yourself as:
 
 ## Usage
 
+### Reuploading from one service to another
+
 1. Update your `config/storage.yml` with the new service:
    ```yaml
     local:
@@ -41,10 +43,32 @@ Or install it yourself as:
      rake nochmal:reupload REUPLOAD_FROM=local REUPLOAD_TO=remote # or rake nochmal:reupload[local,remote]
    ```
 
+### Migrating from Carrierwave (Disk-Storage) to ActiveStorage
+
+The migration from Carrierwave is mostly series manual steps, nochmal provides some advice for preparation and helps with the copying of data. No automated code-changes are made, you are the master of your ~~fate~~_app_, you are the captain of your ~~soul~~_code_. The journey includes mostly these steps:
+
+1. Analyze your application for exisiting uploaders and needed changes
+   ```bash
+     rake nochmal:carrierwave:analyze
+   ```
+2. Change your application and test it automatically and manually
+   With the provided helper, you can read from active_storage and carrierwave and upload to active_storage
+
+3. Deploy your application with this hybrid setup
+
+4. Reupload all carrierwave-uploads to active_storage
+   ```bash
+     NOCHMAL_MIGRATION=yay rake nochmal:carrierwave:migrate
+	 ```
+5. Remove all remainders of carrierwave, deploy that, remove all carrierwave-uploads
+
 ## Project Scope
 
 - [x] Works for `has_one_attached` attachments
-- [ ] Does not yet work for `has_many_attached` attachments
+- [x] Works for `has_many_attached` attachments
+- [x] Works for single-file carrierwave-uploaders
+- [ ] Does not yet work for multi-file carrerwave-uploaders
+- [ ] Does not yet help you with migrating from paperclip
 
 ## What about the name?
 

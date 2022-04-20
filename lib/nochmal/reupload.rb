@@ -9,9 +9,10 @@ module Nochmal
     attr_reader :active_storage, :from_service, :to_service
 
     def initialize(from:, to: nil, helper: nil)
-      @active_storage = helper || ActiveStorageHelper.new
+      @active_storage = helper || Adapters::ActiveStorage.new
       @from_service = active_storage.from_storage_service(from.to_sym)
       @to_service = active_storage.to_storage_service(to&.to_sym)
+      @notes = []
     end
 
     def all
@@ -22,6 +23,10 @@ module Nochmal
       handle_each_model(:list)
     end
 
+    def count
+      handle_each_model(:count)
+    end
+
     private
 
     def handle_each_model(action)
@@ -29,9 +34,14 @@ module Nochmal
 
       Output.reupload(models) do
         models.each do |model|
+          # Output.model(model, skipping: true) &&
+          next if skip_model?(model)
+
           reupload_model(model)
         end
       end
+      @notes << active_storage.notes
+      Output.notes(@notes.compact)
     end
 
     def models
@@ -50,29 +60,33 @@ module Nochmal
       end
     end
 
+    def skip_model?(model)
+      !model.table_exists? || # no table
+        types(model).all? do |type| # no uploads of any kind (type)
+          active_storage.empty_collection?(model, type)
+        end
+    end
+
     def reupload_type(model, type)
-      collection = model.send("with_attached_#{type}")
-      return false unless collection.table_exists?
+      collection = active_storage.collection(model, type)
+
+      @notes << active_storage.notes(model, type)
 
       Output.type(type, collection.count, @mode) do
         collection.find_each do |item|
-          perform(item.send(type))
+          result = perform(item, type)
+          @notes << result if result.present?
         end
       end
+
+      active_storage.cleanup(model, type)
     end
 
-    def perform(attachment)
-      blob = attachment.blob
-
+    def perform(attachment, type)
       case @mode
-      when :reupload
-        StringIO.open(@from_service.download(blob.key)) do |temp|
-          @to_service.upload(blob.key, temp)
-        end
-
-        Output.print_progress_indicator
-      when :list
-        Output.attachment(blob)
+      when :reupload then active_storage.reupload(attachment, type)
+      when :list     then active_storage.list(attachment)
+      when :count    then active_storage.count
       end
     end
   end

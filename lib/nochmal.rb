@@ -4,8 +4,15 @@ $LOAD_PATH.unshift File.dirname(__FILE__)
 
 # This module is the base of the nochmal gem
 module Nochmal
-  autoload :Reupload, "nochmal/reupload.rb"
-  autoload :ActiveStorageHelper, "nochmal/active_storage_helper"
+  module Adapters
+    autoload :Base,                 "nochmal/adapters/base"
+    autoload :ActiveStorage,        "nochmal/adapters/active_storage"
+    autoload :Carrierwave,          "nochmal/adapters/carrierwave"
+    autoload :CarrierwaveAnalyze,   "nochmal/adapters/carrierwave_analyze"
+    autoload :CarrierwaveMigration, "nochmal/adapters/carrierwave_migration"
+  end
+
+  autoload :Reupload, "nochmal/reupload"
   autoload :Output, "nochmal/output"
 
   autoload :VERSION, "nochmal/version"
