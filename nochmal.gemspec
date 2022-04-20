@@ -30,9 +30,11 @@ Gem::Specification.new do |spec|
   # Uncomment to register a new dependency of your gem
   # spec.add_dependency "example-gem", "~> 1.0"
 
+  spec.add_dependency "pastel" # terminal colors
+  spec.add_dependency "rails", ">= 6.0"
+
   spec.add_development_dependency "codecov"
   spec.add_development_dependency "dotenv"
-  spec.add_development_dependency "rails"
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rspec-its"

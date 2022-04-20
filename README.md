@@ -59,15 +59,21 @@ The migration from Carrierwave is mostly series manual steps, nochmal provides s
 4. Reupload all carrierwave-uploads to active_storage
    ```bash
      NOCHMAL_MIGRATION=yay rake nochmal:carrierwave:migrate
-	 ```
+   ```
+   Nochmal store some metadata to allow resuming a migration if the process dies or gets interrupted. If you want to keep this data either way, you can pass the environment-variable `NOCHMAL_KEEP_METADATA` with any value:
+   ```bash
+     NOCHMAL_MIGRATION=yay NOCHMAL_KEEP_METADATA=any rake nochmal:carrierwave:migrate
+   ```
+   If you want or need to resume a migration, run the command again and follow the suggestion that works best for you.
+
 5. Remove all remainders of carrierwave, deploy that, remove all carrierwave-uploads
 
 ## Project Scope
 
 - [x] Works for `has_one_attached` attachments
 - [x] Works for `has_many_attached` attachments
-- [x] Works for single-file carrierwave-uploaders
-- [ ] Does not yet work for multi-file carrerwave-uploaders
+- [x] Works for single-file disk-based carrierwave-uploaders
+- [ ] Does not yet work for multi-file carrierwave-uploaders
 - [ ] Does not yet help you with migrating from paperclip
 
 ## What about the name?

@@ -10,8 +10,6 @@ module Nochmal
 
     def initialize(from:, to: nil, helper: nil)
       @active_storage = helper || Adapters::ActiveStorage.new
-      @from_service = active_storage.from_storage_service(from.to_sym)
-      @to_service = active_storage.to_storage_service(to&.to_sym)
       @notes = []
     end
 
@@ -29,57 +27,48 @@ module Nochmal
 
     private
 
-    def handle_each_model(action)
+    def handle_each_model(action) # rubocop:disable Metrics/MethodLength
       @mode = action
+      active_storage.setup(@mode)
 
       Output.reupload(models) do
         models.each do |model|
-          # Output.model(model, skipping: true) &&
           next if skip_model?(model)
 
           reupload_model(model)
         end
       end
-      @notes << active_storage.notes
+
+      @notes << active_storage.general_notes
       Output.notes(@notes.compact)
-    end
-
-    def models
-      active_storage.models_with_attachments
-    end
-
-    def types(model)
-      active_storage.attachment_types_for(model)
+      active_storage.teardown
     end
 
     def reupload_model(model)
       Output.model(model) do
-        types(model).each do |type|
+        active_storage.attachment_types_for(model).each do |type|
           reupload_type(model, type)
         end
       end
+
+      active_storage.model_completed(model)
     end
 
-    def skip_model?(model)
-      !model.table_exists? || # no table
-        types(model).all? do |type| # no uploads of any kind (type)
-          active_storage.empty_collection?(model, type)
-        end
-    end
-
-    def reupload_type(model, type)
+    def reupload_type(model, type) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
       collection = active_storage.collection(model, type)
-
-      @notes << active_storage.notes(model, type)
+      @notes << active_storage.type_notes(model, type)
 
       Output.type(type, collection.count, @mode) do
         collection.find_each do |item|
           result = perform(item, type)
-          @notes << result if result.present?
+
+          @notes << result[:message]
+          Output.print_result_indicator(result[:status])
+          active_storage.item_completed(item, type, result[:status])
         end
       end
 
-      active_storage.cleanup(model, type)
+      active_storage.type_completed(model, type)
     end
 
     def perform(attachment, type)
@@ -88,6 +77,19 @@ module Nochmal
       when :list     then active_storage.list(attachment)
       when :count    then active_storage.count
       end
+    end
+
+    ## helper-functions
+
+    def skip_model?(model)
+      !model.table_exists? || # no table
+        active_storage.attachment_types_for(model).all? do |type| # no uploads of any kind (type)
+          active_storage.empty_collection?(model, type)
+        end
+    end
+
+    def models
+      active_storage.models_with_attachments
     end
   end
 end

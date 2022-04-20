@@ -24,8 +24,22 @@ module Nochmal
         false # simulate that uploads exist
       end
 
-      def notes(model = nil, type = nil)
-        return [display_helper_notes, gemfile_additions].join("\n") unless model && type
+      # actions
+
+      def reupload(_record, _type)
+        { status: :ok } # like count
+      end
+
+      # hooks
+
+      def general_notes
+        [
+          display_helper_notes,
+          gemfile_additions
+        ].join("\n")
+      end
+
+      def type_notes(model = nil, type = nil)
         return nil if @carrierwave_changed.include?(model.base_class.sti_name)
 
         @carrierwave_changed << model.base_class.sti_name
@@ -37,10 +51,6 @@ module Nochmal
           validation_notes(model, type, uploader),
           uploader_change(uploader), "\n"
         ].join
-      end
-
-      def reupload(_record, _type)
-        Output.print_progress_indicator
       end
 
       private
@@ -195,11 +205,6 @@ module Nochmal
 
         validation_dependencies = <<~TEXT
           gem 'active_storage_validations' # validate filesize, dimensions and content-type
-          # sadly, both mini_magick AND vips need to be here, because the gem
-          # references those constants in the source, even if they are not used
-          # See https://github.com/igorkasyanchuk/active_storage_validations
-          gem 'mini_magick'
-          gem 'vips'
         TEXT
 
         <<~TEXT
