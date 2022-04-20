@@ -16,11 +16,15 @@ module Nochmal
         puts model_footer
       end
 
-      def type(type, count)
+      def type(type, count, action)
         puts type_header(type)
-        print attachment_summary(count)
+        print attachment_summary(count, action)
         yield
         puts type_footer
+      end
+
+      def attachment(filename)
+        print attachment_detail(filename)
       end
 
       def print_progress_indicator
@@ -50,8 +54,12 @@ module Nochmal
         "  Type #{green(type)}"
       end
 
-      def attachment_summary(count)
-        "    Reuploading #{count} #{"attachment".pluralize(count)}: "
+      def attachment_summary(count, action)
+        "    Going to #{action} #{count} #{"attachment".pluralize(count)}: "
+      end
+
+      def attachment_detail(filename)
+        "\n      - #{filename}"
       end
 
       def type_footer

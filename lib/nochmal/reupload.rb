@@ -1,4 +1,4 @@
-#frozen_string_literal: true
+# frozen_string_literal: true
 
 module Nochmal
   # Handles Reuploading of all attachments
@@ -10,19 +10,29 @@ module Nochmal
 
     def initialize(from:, to: nil, helper: nil)
       @active_storage = helper || ActiveStorageHelper.new
-      @from_service = active_storage.storage_service(from.to_sym)
-      @to_service = active_storage.storage_service(to&.to_sym)
+      @from_service = active_storage.from_storage_service(from.to_sym)
+      @to_service = active_storage.to_storage_service(to&.to_sym)
     end
 
     def all
+      handle_each_model(:reupload)
+    end
+
+    def list
+      handle_each_model(:list)
+    end
+
+    private
+
+    def handle_each_model(action)
+      @mode = action
+
       Output.reupload(models) do
         models.each do |model|
           reupload_model(model)
         end
       end
     end
-
-    private
 
     def models
       active_storage.models_with_attachments
@@ -42,22 +52,28 @@ module Nochmal
 
     def reupload_type(model, type)
       collection = model.send("with_attached_#{type}")
+      return false unless collection.table_exists?
 
-      Output.type(type, collection.count) do
+      Output.type(type, collection.count, @mode) do
         collection.find_each do |item|
-          reupload(item.send(type))
+          perform(item.send(type))
         end
       end
     end
 
-    def reupload(attachment)
+    def perform(attachment)
       blob = attachment.blob
 
-      StringIO.open(@from_service.download(blob.key)) do |temp|
-        @to_service.upload(blob.key, temp)
-      end
+      case @mode
+      when :reupload
+        StringIO.open(@from_service.download(blob.key)) do |temp|
+          @to_service.upload(blob.key, temp)
+        end
 
-      Output.print_progress_indicator
+        Output.print_progress_indicator
+      when :list
+        Output.attachment(blob)
+      end
     end
   end
 end

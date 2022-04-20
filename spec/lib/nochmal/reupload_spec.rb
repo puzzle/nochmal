@@ -59,6 +59,7 @@ RSpec.describe Nochmal::Reupload do
   def stub_models
     allow(models).to receive(:count).and_return(10)
     allow(models).to receive(:find_each).and_yield(model)
+    allow(models).to receive(:table_exists?).and_return(true)
     allow(model).to receive(:with_attached_avatar).and_return(models)
     allow(model).to receive(:avatar).and_return(type)
     allow(type).to receive(:to_str).and_return("avatar")

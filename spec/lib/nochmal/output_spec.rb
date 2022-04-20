@@ -56,7 +56,7 @@ RSpec.describe Nochmal::Output do
 
   describe "#type" do
     subject(:type) do
-      described_class.type(object, count) { object.test }
+      described_class.type(object, count, :reupload) { object.test }
     end
 
     let(:object) { instance_double("Test1") }

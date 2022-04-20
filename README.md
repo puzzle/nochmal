@@ -38,7 +38,7 @@ Or install it yourself as:
    ```
 1. Run the rake task:
    ```bash
-     rake nochmal:reupload REUPLOAD_FROM=local REUPLOAD_TO=remote
+     rake nochmal:reupload REUPLOAD_FROM=local REUPLOAD_TO=remote # or rake nochmal:reupload[local,remote]
    ```
 
 ## Project Scope
