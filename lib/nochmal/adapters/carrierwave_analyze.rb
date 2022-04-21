@@ -11,10 +11,14 @@ module Nochmal
         @variants_present = false
       end
 
+      def to_storage_service(to = @to)
+        @to_storage_service ||= ActiveStorage.new(from: :unused, to: @to).to_storage_service
+      end
+
       def attachment_types_for(model)
         @types[model] ||= model.uploaders.map do |uploader, uploader_class|
           @uploaders[model] = { uploader => uploader_class }
-          model.has_one_attached prefixed(uploader), service: @to_storage_service.name
+          model.has_one_attached prefixed(uploader), service: to_storage_service.name
 
           uploader
         end

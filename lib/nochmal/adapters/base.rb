@@ -66,7 +66,7 @@ module Nochmal
       def type_completed(_model, _type); end
 
       # called after reuploading/listing/counting each record/attachment
-      def item_completed(_item, _type); end
+      def item_completed(_item, _type, _status); end
 
       # actions
 
