@@ -7,11 +7,9 @@ module Nochmal
       # action
 
       def reupload(record, type)
-        _, pathname = blob(record.send(type))
-
         status = MigrationData::Status.find_by(
           record_id: record.id, record_type: record.class.sti_name,
-          uploader_type: type, filename: pathname.to_s
+          uploader_type: type, filename: blob(record.send(type)).to_s
         )
 
         if status&.migrated?

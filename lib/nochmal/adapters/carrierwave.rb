@@ -22,14 +22,12 @@ module Nochmal
       end
 
       def blob(attachment)
-        [
-          attachment.model, Pathname.new(
-            attachment.file.file.gsub(
-              attachment.mounted_as.to_s,
-              not_prefixed(attachment.mounted_as).to_s
-            )
+        Pathname.new(
+          attachment.file.file.gsub(
+            attachment.mounted_as.to_s,
+            not_prefixed(attachment.mounted_as).to_s
           )
-        ]
+        )
       end
 
       private

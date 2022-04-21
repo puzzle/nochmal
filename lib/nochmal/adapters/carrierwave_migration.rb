@@ -12,7 +12,7 @@ module Nochmal
       end
 
       def reupload(record, type)
-        _record, pathname = blob(record.send(type))
+        pathname = blob(record.send(type))
 
         if pathname.exist?
           StringIO.open(pathname.read) do |temp|
@@ -55,13 +55,11 @@ module Nochmal
         return if @mode == :count
         return unless %i[ok missing].include? status
 
-        _, pathname = blob(record.send(type))
-
         MigrationData::Status.find_or_create_by(
           record_id: record.id,
           record_type: record.class.sti_name,
           uploader_type: type,
-          filename: pathname.to_s
+          filename: blob(record.send(type)).to_s
         ).update(status: status)
       end
 

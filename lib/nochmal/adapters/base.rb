@@ -83,7 +83,7 @@ module Nochmal
       end
 
       def list(attachment)
-        filename = Array.wrap(blob(attachment)).last
+        filename = blob(attachment)
 
         Output.attachment(filename.try(:key) || filename)
 
