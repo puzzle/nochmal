@@ -12,7 +12,7 @@ module Nochmal
       end
 
       def to_storage_service(to = @to)
-        @to_storage_service ||= ActiveStorage.new(from: :unused, to: @to).to_storage_service
+        @to_storage_service ||= ActiveStorage.new(from: :unused, to: to).to_storage_service
       end
 
       def attachment_types_for(model)
