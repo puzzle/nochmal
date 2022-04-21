@@ -4,6 +4,13 @@ module Nochmal
   module Adapters
     # Handles active storage specifics for the Reupload Task
     class ActiveStorage < Base
+      def validate
+        services_differ = (@to != @from)
+        message = "It does not make sense to migrate from one service to the same one. from and to should differ."
+
+        raise message unless services_differ
+      end
+
       def to_storage_service(service = @to)
         storage_service(service)
       end

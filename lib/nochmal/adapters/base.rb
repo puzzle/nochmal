@@ -12,6 +12,12 @@ module Nochmal
 
         @types = {}
         @uploaders = {}
+
+        validate
+      end
+
+      def validate
+        true
       end
 
       def to_storage_service(service = @from); end
