@@ -8,8 +8,8 @@ module Nochmal
   class Reupload
     attr_reader :active_storage, :from_service, :to_service
 
-    def initialize(from:, to: nil, helper: nil)
-      @active_storage = helper || Adapters::ActiveStorage.new
+    def initialize(from: nil, to: nil, helper: nil)
+      @active_storage = helper || Adapters::ActiveStorage.new(from: from, to: to)
       @notes = []
     end
 

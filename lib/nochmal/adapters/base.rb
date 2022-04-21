@@ -6,14 +6,17 @@ module Nochmal
     #
     # currently, it provides a comon interface and some support for STI
     class Base
-      def initialize
+      def initialize(from: nil, to: nil)
+        @from = from
+        @to = to
+
         @types = {}
         @uploaders = {}
       end
 
-      def to_storage_service(service = nil); end
+      def to_storage_service(service = @from); end
 
-      def from_storage_service(service = nil); end
+      def from_storage_service(service = @to); end
 
       def models_with_attachments
         raise "Return an Array of model-classes in your adapter-subclass"

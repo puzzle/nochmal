@@ -4,11 +4,11 @@ module Nochmal
   module Adapters
     # Handles active storage specifics for the Reupload Task
     class ActiveStorage < Base
-      def to_storage_service(service = nil)
+      def to_storage_service(service = @to)
         storage_service(service)
       end
 
-      def from_storage_service(service = nil)
+      def from_storage_service(service = @from)
         storage_service(service)
       end
 
