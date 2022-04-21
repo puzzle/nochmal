@@ -39,7 +39,8 @@ module Nochmal
       def general_notes
         [
           display_helper_notes,
-          gemfile_additions
+          gemfile_additions,
+          final_thank_you
         ].join("\n")
       end
 
@@ -205,20 +206,33 @@ module Nochmal
       end
 
       def gemfile_additions
-        variants_dependencies = <<~TEXT
+        variants_dependencies = <<~TEXT.chomp
           gem 'active_storage_variant' # provides person.avatar.variant(:thumb) for Rails < 7
         TEXT
 
-        validation_dependencies = <<~TEXT
+        validation_dependencies = <<~TEXT.chomp
           gem 'active_storage_validations' # validate filesize, dimensions and content-type
         TEXT
 
         <<~TEXT
+          ---------------------------------------------------------
           The following gems are suggested to have in your Gemfile:
 
           gem 'nochmal' # only needed until the migration to the desired ActiveStorage-Backend is complete
           #{variants_dependencies if @variants_present}
           #{validation_dependencies}
+        TEXT
+      end
+
+      def final_thank_you
+        <<~TEXT
+
+          ---------------------------------------------------------
+          Thank you for using "nochmal" today.
+
+          If this is the first thing you read, please read again
+          from the top. :-)
+          ---------------------------------------------------------
         TEXT
       end
     end
