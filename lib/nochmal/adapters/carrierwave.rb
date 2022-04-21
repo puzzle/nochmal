@@ -6,10 +6,6 @@ module Nochmal
     class Carrierwave < Base
       PREFIX = "carrierwave_"
 
-      def to_storage_service(service = nil)
-        @to_storage_service ||= ActiveStorage.new.to_storage_service(service)
-      end
-
       def models_with_attachments
         @models_with_attachments ||= begin
           Rails.application.eager_load!

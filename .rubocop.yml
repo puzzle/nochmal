@@ -26,6 +26,10 @@ Metrics/BlockLength:
     - nochmal.gemspec
     - lib/tasks/nochmal.rake
 
+Style/HashSyntax:
+  Exclude:
+    - lib/tasks/nochmal.rake
+
 Layout/LineLength:
   Max: 120
 ...

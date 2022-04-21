@@ -72,12 +72,14 @@ module Nochmal
           "attachable.variant :#{name}, #{version.processors.map(&:compact).to_h}"
         end
 
-        return "  has_one_attached :#{type}" if versions.none?
+        service = ", service: :#{@to}" unless @to.nil?
+
+        return "  has_one_attached :#{type}#{service}" if versions.none?
 
         @variants_present = true
 
         <<~TEXT
-            has_one_attached :#{type} do |attachable|
+            has_one_attached :#{type}#{service} do |attachable|
               #{versions.join}
             end
           # uploader #{type} has #{versions.size} versions
