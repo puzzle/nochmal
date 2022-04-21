@@ -153,8 +153,8 @@ module Nochmal
                     pic
                   end
                 end
-              elsif model.respond_to?(:"carrierwave_#{name}") && model.send(:"carrierwave_#{name}")
-                model.send(:"carrierwave_#{name}_url")
+              elsif model.respond_to?(:"carrierwave_\#{name}") && model.send(:"carrierwave_\#{name}")
+                model.send(:"carrierwave_\#{name}_url")
               else
                 upload_default(default)
               end
@@ -164,16 +164,16 @@ module Nochmal
             def upload_name(model, name)
               if model.send(name.to_sym).attached?
                 model.send(name.to_sym).filename.to_s
-              elsif model.respond_to?(:"carrierwave_#{name}_identifier")
-                model.send(:"carrierwave_#{name}_identifier")
+              elsif model.respond_to?(:"carrierwave_\#{name}_identifier")
+                model.send(:"carrierwave_\#{name}_identifier")
               end
             end
 
             def upload_exists?(model, name)
               return true if model.send(name.to_sym).attached?
 
-              if model.respond_to?(:"carrierwave_#{name}")
-                model.send(:"carrierwave_#{name}").present?
+              if model.respond_to?(:"carrierwave_\#{name}")
+                model.send(:"carrierwave_\#{name}").present?
               else
                 false
               end
@@ -184,15 +184,15 @@ module Nochmal
             def upload_variant(model, name, variant, default: model.name.underscore)
               if model.send(name.to_sym).attached?
                 model.send(name.to_sym).variant(variant.to_sym)
-              elsif model.respond_to?(:"carrierwave_#{name}")
-                model.send(:"carrierwave_#{name}").send(variant.to_sym).url
+              elsif model.respond_to?(:"carrierwave_\#{name}")
+                model.send(:"carrierwave_\#{name}").send(variant.to_sym).url
               else
                 upload_default([default, variant].compact.map(&:to_s).join('_'))
               end
             end
 
             def upload_default(png_name = 'profil')
-              ActionController::Base.helpers.asset_pack_path("media/images/#{png_name}.png")
+              ActionController::Base.helpers.asset_pack_path("media/images/\#{png_name}.png")
             end
 
             def extract_image_dimensions(width_x_height)
