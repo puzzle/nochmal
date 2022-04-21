@@ -36,7 +36,7 @@ RSpec.describe Nochmal::ActiveStorageHelper do
     context "when association is polymorphic" do
       before do
         prepare_models
-        allow(avatar_association).to receive(:options).and_return({polymorphic: true})
+        allow(avatar_association).to receive(:options).and_return(polymorphic: true)
       end
 
       it { is_expected.not_to include user }
