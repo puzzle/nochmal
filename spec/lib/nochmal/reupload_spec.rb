@@ -3,7 +3,7 @@
 require "spec_helper"
 
 # rubocop:disable RSpec/MultipleMemoizedHelpers
-RSpec.describe Nochmal::Reupload do
+RSpec.xdescribe Nochmal::Reupload do
   subject(:instance) { described_class.new(from: :local, to: :remote, helper: helper) }
 
   let(:helper) { instance_double(Nochmal::ActiveStorageHelper) }
