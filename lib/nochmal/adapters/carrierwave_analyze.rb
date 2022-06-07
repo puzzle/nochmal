@@ -91,7 +91,11 @@ module Nochmal
 
             # allow removal, carrierwave-style
             def remove_#{type}; false end
-            def remove_#{type}=(delete_it); #{type}.purge_later if delete_it; end
+            def remove_#{type}=(deletion_param)
+              if %w(1 yes true).include?(deletion_param.to_s.downcase)
+                #{type}.purge_later
+              end
+            end
         TEXT
       end
 
