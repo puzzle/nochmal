@@ -8,7 +8,7 @@ module Nochmal
           t.belongs_to :record, polymorphic: true
 
           t.string :uploader_type
-          t.string :filename
+          t.text :filename
 
           t.string :status
         end
